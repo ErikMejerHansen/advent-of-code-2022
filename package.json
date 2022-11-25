@@ -1,17 +1,32 @@
 {
-  "name": "book-club-tdd",
+  "name": "advent-of-code-2022",
   "version": "1.0.0",
-  "repository": "git@github.com:ErikMejerHansen/book-club-tdd.git",
-  "author": "Erik Mejer Hansen <erik.mejer.hansen@lego.com>",
+  "author": "Erik Mejer Hansen <erik.mejer.hansen@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^28.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "eslint": "^8.28.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^27.1.6",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
     "jest": "^28.1.0",
+    "prettier": "^2.8.0",
     "ts-jest": "^28.0.4",
     "typescript": "^4.7.3"
   },
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch --maxWorkers=25%"
+    "test:watch": "jest --watch --maxWorkers=25%",
+    "verify:prettier": "prettier \"src/**/*.ts\" --check",
+    "verify:eslint": "eslint . --ext js,ts",
+    "verify:test": "jest",
+    "verify": "yarn verify:prettier && yarn verify:eslint && yarn verify:test",
+    "today": "yarn exec ts-node src/$(date +'%d')/*.ts",
+    "today:start": "./scripts/prep_day.sh",
+    "today:test": "jest src/$(date +'%d')/__tests__/"
   }
 }
