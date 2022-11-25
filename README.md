@@ -1,10 +1,6 @@
-# Jest Template
+# Advent of Code: 2022
 
-Minimal setup to get Jest up and running
+The limitations I gave myself was to:
 
-
-## Getting started
-
-- Run `yarn install` to install dependencies 📦
-- Add tests 🧪
-- Run tests with `yarn test` or `yarn test:watch` 🚀
+- No dependencies
+- Use TDD
