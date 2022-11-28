@@ -2,5 +2,5 @@
 
 The limitations I gave myself was to:
 
-- No dependencies
+- Use no dependencies to solve problems
 - Use TDD
