@@ -11,13 +11,14 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "jest"],
   rules: {
-    "@typescript-eslint/no-unused-vars": [
+    "no-unused-vars": [
       "error",
       {
         vars: "all",
         args: "after-used",
         ignoreRestSiblings: false,
         argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
       },
     ],
   },
