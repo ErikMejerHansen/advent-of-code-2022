@@ -16,7 +16,7 @@ describe("parseDataToNumberArray", () => {
 describe("upsert", () => {
   it("can add a value to a key not already in the map", () => {
     const map = new Map<string, number>();
-    const updater = (_previous: number) => 1;
+    const updater = (_key: string, _previous: number) => 1;
 
     upsert<string, number>(map, "MyNewKey", updater, true);
 
@@ -26,7 +26,7 @@ describe("upsert", () => {
   it("can update an existing value", () => {
     const map = new Map<string, number>();
     map.set("MyNewKey", 1);
-    const updater = (previous: number) => previous + 1;
+    const updater = (_key: string, previous: number) => previous + 1;
 
     upsert<string, number>(map, "MyNewKey", updater, true);
 

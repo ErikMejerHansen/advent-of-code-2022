@@ -19,12 +19,12 @@ export const transpose = <T>(matrix: Matrix<T>): Matrix<T> =>
 export const upsert = <K, V>(
   map: Map<K, V>,
   key: K,
-  updater: (_previous?: V) => V,
+  updater: (_key: K, _previous?: V) => V,
   verbose = false
 ) => {
   if (verbose) {
     console.log("Upsert:", key, "into:", map);
   }
-  const newValue = updater(map.get(key));
+  const newValue = updater(key, map.get(key));
   map.set(key, newValue);
 };
