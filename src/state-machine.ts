@@ -1,10 +1,10 @@
 export type Next<CollectedState, Stimulus> = (
-  updatedState: CollectedState,
-  next: Stimulus
+  _updatedState: CollectedState,
+  _next: Stimulus
 ) => void;
 export type Action<CollectedState, Stimulus> = (
-  incomingState: CollectedState,
-  next: Next<CollectedState, Stimulus>
+  _incomingState: CollectedState,
+  _next: Next<CollectedState, Stimulus>
 ) => void;
 
 type Transitions<Stimulus, CollectedState> = Map<
@@ -18,6 +18,7 @@ type Transitions<Stimulus, CollectedState> = Map<
 export class StateMachine<Stimulus, CollectedState> {
   private _transitions?: Transitions<Stimulus, CollectedState>;
 
+  // eslint-disable-next-line no-unused-vars
   constructor(private start: State<Stimulus, CollectedState>) {}
 
   public set transitions(transitions: Transitions<Stimulus, CollectedState>) {
