@@ -1,9 +1,11 @@
 import {
   findMaximum,
+  Matrix,
   numericalSort,
   parseDataToNumberArray,
   parseStringArrayToNumberArray,
   SortDirection,
+  transpose,
   upsert,
 } from "./utils";
 
@@ -78,5 +80,21 @@ describe("numericalSort", () => {
     expect(numericalSort([-2, -10, 56], SortDirection.Descending)).toEqual([
       56, -2, -10,
     ]);
+  });
+});
+
+describe("transpose", () => {
+  it("switched rows and columns", () => {
+    const matrix: Matrix<Number> = [
+      [1, 2],
+      [3, 4],
+    ];
+
+    const transposedMatrix: Matrix<Number> = [
+      [1, 3],
+      [2, 4],
+    ];
+
+    expect(transpose(matrix)).toEqual(transposedMatrix);
   });
 });
