@@ -1,4 +1,9 @@
-import { parseDataToNumberArray, upsert } from "./utils";
+import {
+  findMaximum,
+  parseDataToNumberArray,
+  parseStringArrayToNumberArray,
+  upsert,
+} from "./utils";
 
 describe("parseDataToNumberArray", () => {
   it("parses a file with numbers on each line as an array of numbers", () => {
@@ -13,12 +18,26 @@ describe("parseDataToNumberArray", () => {
   });
 });
 
+describe("parseStringArrayToNumberArray", () => {
+  it("parses a list of string into numbers", () => {
+    const stringNumbers = ["233", "233"];
+    expect(parseStringArrayToNumberArray(stringNumbers)).toEqual([233, 233]);
+  });
+});
+
+describe("findMaximum", () => {
+  it("can find the maximum number in an array", () => {
+    expect(findMaximum([1, 2, 3, 4])).toBe(4);
+    expect(findMaximum([-1, -2, -3, -4])).toBe(-1);
+  });
+});
+
 describe("upsert", () => {
   it("can add a value to a key not already in the map", () => {
     const map = new Map<string, number>();
     const updater = (_key: string, _previous: number) => 1;
 
-    upsert<string, number>(map, "MyNewKey", updater, true);
+    upsert<string, number>(map, "MyNewKey", updater);
 
     expect(map.get("MyNewKey")).toBe(1);
   });
@@ -28,7 +47,7 @@ describe("upsert", () => {
     map.set("MyNewKey", 1);
     const updater = (_key: string, previous: number) => previous + 1;
 
-    upsert<string, number>(map, "MyNewKey", updater, true);
+    upsert<string, number>(map, "MyNewKey", updater);
 
     expect(map.get("MyNewKey")).toBe(2);
   });
@@ -38,7 +57,7 @@ describe("upsert", () => {
     map.set("MyNewKey", 1);
     const updater = jest.fn();
 
-    upsert<string, number>(map, "MyNewKey", updater, true);
+    upsert<string, number>(map, "MyNewKey", updater);
 
     expect(updater).toHaveBeenCalledTimes(1);
   });

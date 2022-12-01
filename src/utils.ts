@@ -8,6 +8,12 @@ export const parseDataToNumberArray = (fileName: string) => {
     .map((it) => parseFloat(it));
 };
 
+export const findMaximum = (numbers: number[]) =>
+  numbers.sort((a, b) => a - b)[numbers.length - 1];
+
+export const parseStringArrayToNumberArray = (numbers: string[]) =>
+  numbers.map((s) => parseFloat(s));
+
 export type Matrix<T> = T[][];
 export interface Coordinate {
   x: number;
