@@ -1,4 +1,10 @@
-import { groupByEmptyLine, parseData, part1, splitByEmptyLine } from "../01";
+import {
+  groupByEmptyLine,
+  parseData,
+  part1,
+  part2,
+  splitByEmptyLine,
+} from "../01";
 
 describe("Dec 01", () => {
   describe("Part 1", () => {
@@ -34,6 +40,8 @@ describe("Dec 01", () => {
   });
 
   describe("Part 2", () => {
-    //
+    it("finds the solution to part 1", () => {
+      expect(part2("src/01/data/data.txt")).toBe(212117);
+    });
   });
 });
