@@ -1,7 +1,9 @@
 import {
   findMaximum,
+  numericalSort,
   parseDataToNumberArray,
   parseStringArrayToNumberArray,
+  SortDirection,
   upsert,
 } from "./utils";
 
@@ -60,5 +62,21 @@ describe("upsert", () => {
     upsert<string, number>(map, "MyNewKey", updater);
 
     expect(updater).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("numericalSort", () => {
+  it("acts as the identity function for empty arrays", () => {
+    expect(numericalSort([])).toEqual([]);
+  });
+
+  it("defaults to doing a ascending sort", () => {
+    expect(numericalSort([-2, -10, 56])).toEqual([-10, -2, 56]);
+  });
+
+  it("can do a descending sort", () => {
+    expect(numericalSort([-2, -10, 56], SortDirection.Descending)).toEqual([
+      56, -2, -10,
+    ]);
   });
 });

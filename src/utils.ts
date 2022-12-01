@@ -34,3 +34,19 @@ export const upsert = <K, V>(
   const newValue = updater(key, map.get(key));
   map.set(key, newValue);
 };
+
+export enum SortDirection {
+  // eslint-disable-next-line no-unused-vars
+  Ascending,
+  // eslint-disable-next-line no-unused-vars
+  Descending,
+}
+
+export const numericalSort = (
+  array: number[],
+  direction = SortDirection.Ascending
+) => {
+  const sortFunction =
+    direction === SortDirection.Ascending ? (a, b) => a - b : (a, b) => b - a;
+  return array.sort(sortFunction);
+};

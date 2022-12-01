@@ -1,5 +1,10 @@
 import * as fs from "fs";
-import { findMaximum, parseStringArrayToNumberArray } from "../utils";
+import {
+  findMaximum,
+  numericalSort,
+  parseStringArrayToNumberArray,
+  SortDirection,
+} from "../utils";
 
 export const parseData = (fileName: string) => {
   const data = fs.readFileSync(fileName).toString();
@@ -26,7 +31,10 @@ export const part1 = (fileName) => {
 export const part2 = (fileName) => {
   const parsed = parseData(fileName);
   const summed = parsed.map((group) => group.reduce((acc, curr) => acc + curr));
-  const [first, second, third, _rest] = summed.sort((a, b) => a - b).reverse();
+  const [first, second, third, _rest] = numericalSort(
+    summed,
+    SortDirection.Descending
+  );
 
   return first + second + third;
 };
