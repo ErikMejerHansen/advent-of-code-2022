@@ -1,14 +1,14 @@
 import { State, StateMachine } from "./state-machine";
 
 describe("state-machine", () => {
-  it("trigers its action when transisioning", () => {
+  it("triggers its action when transitioning", () => {
     const action = jest.fn();
     action.mockReturnValueOnce(42);
 
-    const startState = new State<String, number>();
+    const startState = new State<string, number>();
     startState.action = (incomingState, next) => next(incomingState, "toEnd");
 
-    const endState = new State<String, number>();
+    const endState = new State<string, number>();
     endState.action = action;
 
     const transitions = new Map([["toEnd", endState]]);

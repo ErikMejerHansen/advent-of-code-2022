@@ -31,7 +31,7 @@ export const part1 = (fileName) => {
 export const part2 = (fileName) => {
   const parsed = parseData(fileName);
   const summed = parsed.map((group) => group.reduce((acc, curr) => acc + curr));
-  const [first, second, third, _rest] = numericalSort(
+  const [first, second, third] = numericalSort(
     summed,
     SortDirection.Descending
   );

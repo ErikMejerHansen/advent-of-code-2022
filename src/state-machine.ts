@@ -18,7 +18,6 @@ type Transitions<Stimulus, CollectedState> = Map<
 export class StateMachine<Stimulus, CollectedState> {
   private _transitions?: Transitions<Stimulus, CollectedState>;
 
-  // eslint-disable-next-line no-unused-vars
   constructor(private start: State<Stimulus, CollectedState>) {}
 
   public set transitions(transitions: Transitions<Stimulus, CollectedState>) {

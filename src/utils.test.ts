@@ -85,12 +85,12 @@ describe("numericalSort", () => {
 
 describe("transpose", () => {
   it("switched rows and columns", () => {
-    const matrix: Matrix<Number> = [
+    const matrix: Matrix<number> = [
       [1, 2],
       [3, 4],
     ];
 
-    const transposedMatrix: Matrix<Number> = [
+    const transposedMatrix: Matrix<number> = [
       [1, 3],
       [2, 4],
     ];

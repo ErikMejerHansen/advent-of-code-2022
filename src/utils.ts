@@ -36,9 +36,7 @@ export const upsert = <K, V>(
 };
 
 export enum SortDirection {
-  // eslint-disable-next-line no-unused-vars
   Ascending,
-  // eslint-disable-next-line no-unused-vars
   Descending,
 }
 

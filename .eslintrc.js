@@ -4,14 +4,21 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: ["eslint:recommended"],
+  extends: [
+    "eslint:recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "prettier",
+  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 13,
   },
-  plugins: ["@typescript-eslint", "jest"],
+  plugins: ["@typescript-eslint", "jest", "prettier"],
   rules: {
-    "no-unused-vars": [
+    "@typescript-eslint/no-unused-vars": [
       "error",
       {
         vars: "all",
