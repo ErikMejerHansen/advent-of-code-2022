@@ -8,6 +8,14 @@ export const parseDataToNumberArray = (fileName: string) => {
     .map((it) => parseFloat(it));
 };
 
+export const readLines = (fileName: string) =>
+  fs.readFileSync(fileName).toString().split("\n");
+
+export const sum = (numbers: number[]): number =>
+  numbers.reduce((sum, curr) => sum + curr, 0);
+
+export const toSet = (input: string): Set<string> => new Set(input.split(""));
+
 export const findMaximum = (numbers: number[]) =>
   numbers.sort((a, b) => a - b)[numbers.length - 1];
 

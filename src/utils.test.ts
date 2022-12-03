@@ -5,6 +5,7 @@ import {
   parseDataToNumberArray,
   parseStringArrayToNumberArray,
   SortDirection,
+  toSet,
   transpose,
   upsert,
 } from "./utils";
@@ -96,5 +97,11 @@ describe("transpose", () => {
     ];
 
     expect(transpose(matrix)).toEqual(transposedMatrix);
+  });
+});
+
+describe("toSet", () => {
+  it("can turn a string into a list of chars", () => {
+    expect(toSet("abCDE")).toEqual(new Set(["a", "b", "C", "D", "E"]));
   });
 });
