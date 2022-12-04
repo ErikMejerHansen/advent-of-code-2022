@@ -8,6 +8,9 @@ export const parseDataToNumberArray = (fileName: string) => {
     .map((it) => parseFloat(it));
 };
 
+export const parseStringArrayToNumberArray = (numbers: string[]) =>
+  numbers.map((s) => parseFloat(s));
+
 export const readLines = (fileName: string) =>
   fs.readFileSync(fileName).toString().split("\n");
 
@@ -18,9 +21,6 @@ export const toSet = (input: string): Set<string> => new Set(input.split(""));
 
 export const findMaximum = (numbers: number[]) =>
   numbers.sort((a, b) => a - b)[numbers.length - 1];
-
-export const parseStringArrayToNumberArray = (numbers: string[]) =>
-  numbers.map((s) => parseFloat(s));
 
 export type Matrix<T> = T[][];
 export interface Coordinate {
