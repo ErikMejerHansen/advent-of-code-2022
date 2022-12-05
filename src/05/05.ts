@@ -8,6 +8,7 @@ interface MoveCommand {
 }
 
 type StackMap = Map<number, string[]>;
+type MovementFunction = (stacks: StackMap, move: MoveCommand) => StackMap;
 
 const parseStackLine = (line: RegExpMatchArray): string[] => {
   if (line === null) {
@@ -116,7 +117,7 @@ const getStackMessage = (stacks: StackMap): string => {
 const executeMoves = (
   stacks: StackMap,
   moves: MoveCommand[],
-  movementFunction: (stacks: StackMap, move: MoveCommand) => StackMap
+  movementFunction: MovementFunction
 ) => {
   const finalStack = moves.reduce((stacks, move) => {
     return movementFunction(stacks, move);
@@ -138,22 +139,18 @@ const prepareData = (
   return [stacks, moves];
 };
 
-export const part1 = (
+const solve = (
   movesFileName: string,
-  stacksFileName: string
-): string => {
+  stacksFileName: string,
+  mover: MovementFunction
+) => {
   const [stacks, moves] = prepareData(movesFileName, stacksFileName);
-  const finalStack = executeMoves(stacks, moves, executeMove);
+  const finalStack = executeMoves(stacks, moves, mover);
 
   return getStackMessage(finalStack);
 };
+export const part1 = (movesFileName: string, stacksFileName: string): string =>
+  solve(movesFileName, stacksFileName, executeMove);
 
-export const part2 = (
-  movesFileName: string,
-  stacksFileName: string
-): string => {
-  const [stacks, moves] = prepareData(movesFileName, stacksFileName);
-  const finalStack = executeMoves(stacks, moves, executeOrderRetainingMove);
-
-  return getStackMessage(finalStack);
-};
+export const part2 = (movesFileName: string, stacksFileName: string): string =>
+  solve(movesFileName, stacksFileName, executeOrderRetainingMove);
