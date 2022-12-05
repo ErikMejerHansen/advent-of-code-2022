@@ -1,4 +1,11 @@
-import { executeMove, parseMoves, parseStacks, part1 } from "../05";
+import {
+  executeMove,
+  executeOrderRetainingMove,
+  parseMoves,
+  parseStacks,
+  part1,
+  part2,
+} from "../05";
 
 describe("Dec 05", () => {
   describe("data parsing", () => {
@@ -70,6 +77,31 @@ describe("Dec 05", () => {
   });
 
   describe("Part 2", () => {
-    //
+    it("can execute a move", () => {
+      const stacks = new Map([
+        [0, ["[Z]", "[N]"]],
+        [1, ["[M]", "[C]", "[D]"]],
+        [2, ["[P]"]],
+      ]);
+
+      const move = { from: 2, to: 3, amount: 2 };
+
+      const updatedStack = executeOrderRetainingMove(move, stacks);
+
+      expect(updatedStack.get(1)).toEqual(["[M]"]);
+      expect(updatedStack.get(2)).toEqual(["[P]", "[C]", "[D]"]);
+    });
+
+    it("calculates the part1 message for the sample data as CMZ", () => {
+      expect(
+        part2("src/05/__tests__/moves.txt", "src/05/__tests__/stacks.txt")
+      ).toEqual("MCD");
+    });
+
+    it("calculates the part1 message for the data as CNSFCGJSM", () => {
+      expect(part2("src/05/data/moves.txt", "src/05/data/stacks.txt")).toEqual(
+        "CNSFCGJSM"
+      );
+    });
   });
 });

@@ -82,6 +82,24 @@ export const executeMove = (
   return clonedMap;
 };
 
+export const executeOrderRetainingMove = (
+  { to, from, amount }: MoveCommand,
+  stacks: Map<number, string[]>
+) => {
+  const clonedMap = new Map(stacks);
+
+  const sourceStack = clonedMap.get(from - 1);
+  const targetStack = clonedMap.get(to - 1);
+  const pickedUp = [];
+  for (let i = 0; i < amount; i++) {
+    const item = sourceStack.pop();
+    pickedUp.push(item);
+  }
+  targetStack.push(...pickedUp.reverse());
+
+  return clonedMap;
+};
+
 const getStackMessage = (stacks: Map<number, string[]>): string => {
   const numberOfStacks = stacks.size;
   let message = "";
@@ -105,6 +123,23 @@ export const part1 = (
 
   const finalStack = moves.reduce((stacks, move) => {
     return executeMove(move, stacks);
+  }, stacks);
+
+  return getStackMessage(finalStack);
+};
+
+export const part2 = (
+  movesFileName: string,
+  stacksFileName: string
+): string => {
+  const movesData = fs.readFileSync(movesFileName).toString();
+  const stacksData = fs.readFileSync(stacksFileName).toString();
+
+  const stacks = parseStacks(stacksData);
+  const moves = parseMoves(movesData);
+
+  const finalStack = moves.reduce((stacks, move) => {
+    return executeOrderRetainingMove(move, stacks);
   }, stacks);
 
   return getStackMessage(finalStack);
