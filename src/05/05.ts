@@ -7,6 +7,8 @@ interface MoveCommand {
   amount: number;
 }
 
+type StackMap = Map<number, string[]>;
+
 const parseStackLine = (line: RegExpMatchArray): string[] => {
   if (line === null) {
     return null;
@@ -18,7 +20,7 @@ const parseStackLine = (line: RegExpMatchArray): string[] => {
   return withoutFullMatchTrimmed;
 };
 
-const buildStacks = (lines: string[][]): Map<number, string[]> => {
+const buildStacks = (lines: string[][]): StackMap => {
   const stackMap = new Map<number, string[]>();
 
   lines.forEach((stackLine: string[]) => {
@@ -40,7 +42,7 @@ const buildStacks = (lines: string[][]): Map<number, string[]> => {
   return stackMap;
 };
 
-export const parseStacks = (data: string): Map<number, string[]> => {
+export const parseStacks = (data: string): StackMap => {
   const lines = data.split("\n");
 
   const stackMatcher = /(...).(...).(...).(...).(...).(...).(...).(...).(...)/;
@@ -68,7 +70,7 @@ export const parseMoves = (data: string): MoveCommand[] => {
 
 export const executeMove = (
   { to, from, amount }: MoveCommand,
-  stacks: Map<number, string[]>
+  stacks: StackMap
 ) => {
   const clonedMap = new Map(stacks);
 
@@ -84,7 +86,7 @@ export const executeMove = (
 
 export const executeOrderRetainingMove = (
   { to, from, amount }: MoveCommand,
-  stacks: Map<number, string[]>
+  stacks: StackMap
 ) => {
   const clonedMap = new Map(stacks);
 
@@ -100,7 +102,7 @@ export const executeOrderRetainingMove = (
   return clonedMap;
 };
 
-const getStackMessage = (stacks: Map<number, string[]>): string => {
+const getStackMessage = (stacks: StackMap): string => {
   const numberOfStacks = stacks.size;
   let message = "";
   for (let i = 0; i < numberOfStacks; i++) {
