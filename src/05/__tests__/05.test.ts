@@ -62,7 +62,6 @@ describe("Dec 05", () => {
   });
 
   describe("Part 1", () => {
-    //
     it("calculates the part1 message for the sample data as CMZ", () => {
       expect(
         part1("src/05/__tests__/moves.txt", "src/05/__tests__/stacks.txt")

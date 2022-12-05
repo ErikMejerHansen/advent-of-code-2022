@@ -106,11 +106,11 @@ const getStackMessage = (stacks: StackMap): string => {
   const numberOfStacks = stacks.size;
   let message = "";
   for (let i = 0; i < numberOfStacks; i++) {
-    message = message.concat(
-      stacks.get(i).pop().replace("[", "").replace("]", "")
-    );
+    message = message.concat(stacks.get(i).pop());
   }
-  return message;
+
+  const cleanedUpMessage = message.replaceAll("[", "").replaceAll("]", "");
+  return cleanedUpMessage;
 };
 
 const executeMoves = (
