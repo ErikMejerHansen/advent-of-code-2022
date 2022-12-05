@@ -1,8 +1,6 @@
 import * as fs from "fs";
 import { upsert } from "../utils";
 
-// const data = fs.readFileSync('./src/05/data/data.txt').toString()
-
 interface MoveCommand {
   from: number;
   to: number;
@@ -45,7 +43,7 @@ const buildStacks = (lines: string[][]): Map<number, string[]> => {
 export const parseStacks = (data: string): Map<number, string[]> => {
   const lines = data.split("\n");
 
-  const stackMatcher = /(...).(...).(...)/;
+  const stackMatcher = /(...).(...).(...).(...).(...).(...).(...).(...).(...)/;
 
   const matched = [...lines.map((line) => line.match(stackMatcher))];
 
@@ -66,4 +64,48 @@ export const parseMoves = (data: string): MoveCommand[] => {
   const lines = data.split("\n");
 
   return lines.map(parseMoveLine);
+};
+
+export const executeMove = (
+  { to, from, amount }: MoveCommand,
+  stacks: Map<number, string[]>
+) => {
+  const clonedMap = new Map(stacks);
+
+  const sourceStack = clonedMap.get(from - 1);
+  const targetStack = clonedMap.get(to - 1);
+  for (let i = 0; i < amount; i++) {
+    const item = sourceStack.pop();
+    targetStack.push(item);
+  }
+
+  return clonedMap;
+};
+
+const getStackMessage = (stacks: Map<number, string[]>): string => {
+  const numberOfStacks = stacks.size;
+  let message = "";
+  for (let i = 0; i < numberOfStacks; i++) {
+    message = message.concat(
+      stacks.get(i).pop().replace("[", "").replace("]", "")
+    );
+  }
+  return message;
+};
+
+export const part1 = (
+  movesFileName: string,
+  stacksFileName: string
+): string => {
+  const movesData = fs.readFileSync(movesFileName).toString();
+  const stacksData = fs.readFileSync(stacksFileName).toString();
+
+  const stacks = parseStacks(stacksData);
+  const moves = parseMoves(movesData);
+
+  const finalStack = moves.reduce((stacks, move) => {
+    return executeMove(move, stacks);
+  }, stacks);
+
+  return getStackMessage(finalStack);
 };

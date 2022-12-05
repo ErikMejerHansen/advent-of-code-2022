@@ -1,14 +1,14 @@
-import { parseMoves, parseStacks } from "../05";
+import { executeMove, parseMoves, parseStacks, part1 } from "../05";
 
 describe("Dec 05", () => {
   describe("data parsing", () => {
     it("can parse the stacks", () => {
       const stacks = parseStacks(
         `
-    [D]    
-[N] [C]    
-[Z] [M] [P]
-1   2   3 `
+    [D]                            
+[N] [C]                            
+[Z] [M] [P]                        
+`
       );
 
       expect(stacks).toEqual(
@@ -37,10 +37,36 @@ describe("Dec 05", () => {
         },
       ]);
     });
+
+    it("can execute a move", () => {
+      const stacks = new Map([
+        [0, ["[Z]", "[N]"]],
+        [1, ["[M]", "[C]", "[D]"]],
+        [2, ["[P]"]],
+      ]);
+
+      const move = { from: 1, to: 2, amount: 1 };
+
+      const updatedStack = executeMove(move, stacks);
+
+      expect(updatedStack.get(0)).toEqual(["[Z]"]);
+      expect(updatedStack.get(1)).toEqual(["[M]", "[C]", "[D]", "[N]"]);
+    });
   });
 
   describe("Part 1", () => {
     //
+    it("calculates the part1 message for the sample data as CMZ", () => {
+      expect(
+        part1("src/05/__tests__/moves.txt", "src/05/__tests__/stacks.txt")
+      ).toEqual("CMZ");
+    });
+
+    it("calculates the part1 message for the data as RNZLFZSJH", () => {
+      expect(part1("src/05/data/moves.txt", "src/05/data/stacks.txt")).toEqual(
+        "RNZLFZSJH"
+      );
+    });
   });
 
   describe("Part 2", () => {
