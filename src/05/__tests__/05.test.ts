@@ -54,7 +54,7 @@ describe("Dec 05", () => {
 
       const move = { from: 1, to: 2, amount: 1 };
 
-      const updatedStack = executeMove(move, stacks);
+      const updatedStack = executeMove(stacks, move);
 
       expect(updatedStack.get(0)).toEqual(["[Z]"]);
       expect(updatedStack.get(1)).toEqual(["[M]", "[C]", "[D]", "[N]"]);
@@ -86,7 +86,7 @@ describe("Dec 05", () => {
 
       const move = { from: 2, to: 3, amount: 2 };
 
-      const updatedStack = executeOrderRetainingMove(move, stacks);
+      const updatedStack = executeOrderRetainingMove(stacks, move);
 
       expect(updatedStack.get(1)).toEqual(["[M]"]);
       expect(updatedStack.get(2)).toEqual(["[P]", "[C]", "[D]"]);

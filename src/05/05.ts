@@ -69,8 +69,8 @@ export const parseMoves = (data: string): MoveCommand[] => {
 };
 
 export const executeMove = (
-  { to, from, amount }: MoveCommand,
-  stacks: StackMap
+  stacks: StackMap,
+  { to, from, amount }: MoveCommand
 ) => {
   const clonedMap = new Map(stacks);
 
@@ -85,8 +85,8 @@ export const executeMove = (
 };
 
 export const executeOrderRetainingMove = (
-  { to, from, amount }: MoveCommand,
-  stacks: StackMap
+  stacks: StackMap,
+  { to, from, amount }: MoveCommand
 ) => {
   const clonedMap = new Map(stacks);
 
@@ -113,6 +113,18 @@ const getStackMessage = (stacks: StackMap): string => {
   return message;
 };
 
+const executeMoves = (
+  stacks: StackMap,
+  moves: MoveCommand[],
+  movementFunction: (stacks: StackMap, move: MoveCommand) => StackMap
+) => {
+  const finalStack = moves.reduce((stacks, move) => {
+    return movementFunction(stacks, move);
+  }, stacks);
+
+  return finalStack;
+};
+
 export const part1 = (
   movesFileName: string,
   stacksFileName: string
@@ -123,9 +135,7 @@ export const part1 = (
   const stacks = parseStacks(stacksData);
   const moves = parseMoves(movesData);
 
-  const finalStack = moves.reduce((stacks, move) => {
-    return executeMove(move, stacks);
-  }, stacks);
+  const finalStack = executeMoves(stacks, moves, executeMove);
 
   return getStackMessage(finalStack);
 };
@@ -140,9 +150,7 @@ export const part2 = (
   const stacks = parseStacks(stacksData);
   const moves = parseMoves(movesData);
 
-  const finalStack = moves.reduce((stacks, move) => {
-    return executeOrderRetainingMove(move, stacks);
-  }, stacks);
+  const finalStack = executeMoves(stacks, moves, executeOrderRetainingMove);
 
   return getStackMessage(finalStack);
 };
