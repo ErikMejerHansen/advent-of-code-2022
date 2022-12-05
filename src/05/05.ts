@@ -125,16 +125,24 @@ const executeMoves = (
   return finalStack;
 };
 
-export const part1 = (
+const prepareData = (
   movesFileName: string,
   stacksFileName: string
-): string => {
+): [StackMap, MoveCommand[]] => {
   const movesData = fs.readFileSync(movesFileName).toString();
   const stacksData = fs.readFileSync(stacksFileName).toString();
 
   const stacks = parseStacks(stacksData);
   const moves = parseMoves(movesData);
 
+  return [stacks, moves];
+};
+
+export const part1 = (
+  movesFileName: string,
+  stacksFileName: string
+): string => {
+  const [stacks, moves] = prepareData(movesFileName, stacksFileName);
   const finalStack = executeMoves(stacks, moves, executeMove);
 
   return getStackMessage(finalStack);
@@ -144,12 +152,7 @@ export const part2 = (
   movesFileName: string,
   stacksFileName: string
 ): string => {
-  const movesData = fs.readFileSync(movesFileName).toString();
-  const stacksData = fs.readFileSync(stacksFileName).toString();
-
-  const stacks = parseStacks(stacksData);
-  const moves = parseMoves(movesData);
-
+  const [stacks, moves] = prepareData(movesFileName, stacksFileName);
   const finalStack = executeMoves(stacks, moves, executeOrderRetainingMove);
 
   return getStackMessage(finalStack);
