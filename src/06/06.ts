@@ -11,5 +11,19 @@ export const findMarkerPosition = (sequence: string): number => {
   }
 };
 
+export const findStartOfMessagePosition = (sequence: string): number => {
+  for (let i = 0; i < sequence.length - 13; i++) {
+    const letters = sequence.substring(i, i + 14);
+    const uniqueLetters = new Set(letters);
+
+    if (uniqueLetters.size === 14) {
+      return i + 14;
+    }
+  }
+};
+
 export const part1 = (fileName: string): number =>
   findMarkerPosition(readLines(fileName)[0]);
+
+export const part2 = (fileName: string): number =>
+  findStartOfMessagePosition(readLines(fileName)[0]);
