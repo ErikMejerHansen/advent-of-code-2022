@@ -141,6 +141,25 @@ export const buildTree = (
   return root;
 };
 
-export const directoriesBelowLimit = (limit: number, tree: Tree): Tree[] => {
-  return [];
+export const directoriesBelowLimit = (
+  limit: number,
+  tree: TreeNode,
+  aboveLimit: number[] = []
+): number[] => {
+  if (tree.kind === "tree") {
+    if (tree.size <= limit) {
+      aboveLimit.push(tree.size);
+    }
+
+    tree.children
+      .filter((child) => child.kind === "tree")
+      .map((subtree) => directoriesBelowLimit(limit, subtree, aboveLimit));
+
+    return [...aboveLimit];
+  }
+
+  if (tree.size > limit) return [];
+  if (tree.kind === "leaf") return [];
+
+  return aboveLimit;
 };

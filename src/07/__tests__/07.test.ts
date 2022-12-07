@@ -193,7 +193,7 @@ describe("Dec 07", () => {
         { type: DirectoryItem.Directory, name: "b", size: 0 },
         { type: Command.CHANGE_DIR, destination: "b" },
         { type: Command.LIST_DIR },
-        { type: DirectoryItem.File, name: "c.txt", size: 210 },
+        { type: DirectoryItem.File, name: "c.txt", size: 200 },
         { type: Command.CHANGE_DIR, destination: ".." },
         { type: Command.LIST_DIR },
         { type: DirectoryItem.Directory, name: "e", size: 0 },
@@ -202,8 +202,8 @@ describe("Dec 07", () => {
         { type: DirectoryItem.File, name: "f.txt", size: 400 },
       ]);
 
-      expect(directoriesBelowLimit(400, tree)).toHaveLength(1);
-      expect(directoriesBelowLimit(401, tree)).toHaveLength(2);
+      expect(directoriesBelowLimit(200, tree)).toHaveLength(1);
+      expect(directoriesBelowLimit(400, tree)).toHaveLength(2);
       expect(directoriesBelowLimit(1000, tree)).toHaveLength(3);
     });
   });
