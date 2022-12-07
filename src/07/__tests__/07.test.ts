@@ -50,7 +50,7 @@ describe("Dec 07", () => {
     it("can construct a tree with a root", () => {
       expect(
         buildTree([{ type: Command.CHANGE_DIR, destination: "/" }])
-      ).toEqual([[{ type: DirectoryItem.Directory, name: "/", size: 0 }]]);
+      ).toEqual({ name: "/", children: [] });
     });
   });
 

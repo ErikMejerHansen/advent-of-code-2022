@@ -52,11 +52,20 @@ export const parseData = (
   fileName: string
 ): (CommandLine | DirectoryListingLine)[] => readLines(fileName).map(parseLine);
 
-export const buildTree = (input: (CommandLine | DirectoryListingLine)[]) => {
+interface Tree {
+  name: string;
+  children: Array<Tree | Leaf>;
+}
+interface Leaf {
+  name: string;
+  size: number;
+}
+
+export const buildTree = (
+  input: (CommandLine | DirectoryListingLine)[]
+): Tree => {
   const item = input.pop();
   if (item.type === Command.CHANGE_DIR) {
-    return [
-      [{ type: DirectoryItem.Directory, name: item.destination, size: 0 }],
-    ];
+    return { name: item.destination, children: [] };
   }
 };
