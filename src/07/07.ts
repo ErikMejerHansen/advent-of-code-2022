@@ -50,11 +50,7 @@ const parseDirectoryListing = (line: string): DirectoryListingLine => {
   }
 };
 
-export const parseLine = (
-  line: string
-):
-  | { type: Command; destination?: string }
-  | { type: DirectoryItem; name: string; size: number } => {
+export const parseLine = (line: string): CommandLine | DirectoryListingLine => {
   if (line.startsWith("$")) {
     return parseCommand(line);
   } else {
