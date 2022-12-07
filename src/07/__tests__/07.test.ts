@@ -3,7 +3,12 @@ import {
   Command,
   directoriesBelowLimit,
   DirectoryItem,
+  directorySizes,
   parseLine,
+  parseToTree,
+  part1,
+  part2,
+  spaceToFree,
 } from "../07";
 
 describe("Dec 07", () => {
@@ -206,9 +211,47 @@ describe("Dec 07", () => {
       expect(directoriesBelowLimit(400, tree)).toHaveLength(2);
       expect(directoriesBelowLimit(1000, tree)).toHaveLength(3);
     });
+
+    it("calculates the part 1 example size as 95437", () => {
+      expect(part1("src/07/__tests__/test-data.txt")).toEqual(95437);
+    });
+
+    it("calculates the part 1 size as 95437", () => {
+      expect(part1("src/07/data/data.txt")).toEqual(1915606);
+    });
   });
 
   describe("Part 2", () => {
-    //
+    it("calculates the amount of free space to free up", () => {
+      const tree = parseToTree("src/07/__tests__/test-data.txt");
+      expect(spaceToFree(tree)).toEqual(8381165);
+    });
+
+    it("can find directories sizes", () => {
+      const tree = buildTree([
+        { type: Command.CHANGE_DIR, destination: "/" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.Directory, name: "b", size: 0 },
+        { type: Command.CHANGE_DIR, destination: "b" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.File, name: "c.txt", size: 200 },
+        { type: Command.CHANGE_DIR, destination: ".." },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.Directory, name: "e", size: 0 },
+        { type: Command.CHANGE_DIR, destination: "e" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.File, name: "f.txt", size: 400 },
+      ]);
+
+      expect(directorySizes(tree)).toEqual([600, 200, 400]);
+    });
+
+    it("calculates the freed up space for part 2 sample data as 24933642", () => {
+      expect(part2("src/07/__tests__/test-data.txt")).toEqual(24933642);
+    });
+
+    it("calculates the freed up space for part 2 as 5025657", () => {
+      expect(part2("src/07/data/data.txt")).toEqual(5025657);
+    });
   });
 });

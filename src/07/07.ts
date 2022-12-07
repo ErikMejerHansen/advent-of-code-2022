@@ -1,8 +1,5 @@
-// import * as fs from 'fs'
+import { numericalSort, readLines, sum } from "../utils";
 
-import { readLines } from "../utils";
-
-// const data = fs.readFileSync('./src/07/data/data.txt').toString()
 export enum Command {
   CHANGE_DIR = "$ cd",
   LIST_DIR = "$ ls",
@@ -162,4 +159,56 @@ export const directoriesBelowLimit = (
   if (tree.kind === "leaf") return [];
 
   return aboveLimit;
+};
+
+export const directorySizes = (
+  tree: TreeNode,
+  sizes: number[] = []
+): number[] => {
+  if (tree.kind === "tree") {
+    sizes.push(tree.size);
+    tree.children
+      .filter((child) => child.kind === "tree")
+      .map((subtree) => directorySizes(subtree, sizes));
+
+    return [...sizes];
+  }
+
+  if (tree.kind === "leaf") return [];
+
+  return sizes;
+};
+
+export const parseToTree = (fileName: string): Tree => {
+  const entries = parseData(fileName);
+  const tree = buildTree(entries);
+
+  return tree;
+};
+
+export const part1 = (fileName: string): number => {
+  const tree = parseToTree(fileName);
+
+  const directorySizesBelowThreshold = directoriesBelowLimit(100000, tree);
+
+  return sum(directorySizesBelowThreshold);
+};
+
+export const spaceToFree = (tree: Tree) => {
+  const totalSize = 70_000_000;
+  const spaceNeeded = 30_000_000;
+
+  const freeSpace = totalSize - tree.size;
+
+  return spaceNeeded - freeSpace;
+};
+
+export const part2 = (fileName: string): number => {
+  const tree = parseToTree(fileName);
+  const spaceNeeded = spaceToFree(tree);
+
+  const sizes = numericalSort(directorySizes(tree));
+
+  const candidates = sizes.filter((size) => size > spaceNeeded);
+  return candidates[0];
 };
