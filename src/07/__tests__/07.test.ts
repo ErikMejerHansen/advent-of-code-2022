@@ -42,8 +42,9 @@ describe("Dec 07", () => {
         ])
       ).toEqual({
         name: "/",
-        children: [{ name: "b.txt", size: 210 }],
+        children: [{ name: "b.txt", size: 210, parent: expect.anything() }],
         parent: null,
+        size: expect.anything(),
       });
     });
 
@@ -61,13 +62,15 @@ describe("Dec 07", () => {
       ).toEqual({
         name: "/",
         parent: null,
+        size: expect.anything(),
         children: [
           {
             name: "b",
             parent: expect.anything(),
+            size: expect.anything(),
             children: [
-              { name: "c.txt", size: 210 },
-              { name: "e.txt", size: 10 },
+              { name: "c.txt", size: 210, parent: expect.anything() },
+              { name: "e.txt", size: 10, parent: expect.anything() },
             ],
           },
         ],
@@ -95,20 +98,23 @@ describe("Dec 07", () => {
         children: [
           {
             name: "b",
-            children: [{ name: "c.txt", size: 210 }],
+            size: expect.anything(),
+            children: [{ name: "c.txt", size: 210, parent: expect.anything() }],
             parent: expect.anything(),
           },
           {
             name: "e",
-            children: [{ name: "f.txt", size: 100 }],
+            size: expect.anything(),
+            children: [{ name: "f.txt", size: 100, parent: expect.anything() }],
             parent: expect.anything(),
           },
         ],
         parent: null,
+        size: expect.anything(),
       });
     });
 
-    it("can calculate the directory sizes for root with two leaves", () => {
+    it("calculates the directory sizes for root with two leaves", () => {
       const tree = buildTree([
         { type: Command.CHANGE_DIR, destination: "/" },
         { type: Command.LIST_DIR },
@@ -117,6 +123,27 @@ describe("Dec 07", () => {
       ]);
 
       expect(tree.size).toEqual(310);
+    });
+
+    it("calculates the directory sizes for root with two sub-trees", () => {
+      const tree = buildTree([
+        { type: Command.CHANGE_DIR, destination: "/" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.Directory, name: "b", size: 0 },
+        { type: Command.CHANGE_DIR, destination: "b" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.File, name: "c.txt", size: 210 },
+        { type: Command.CHANGE_DIR, destination: ".." },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.Directory, name: "e", size: 0 },
+        { type: Command.CHANGE_DIR, destination: "e" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.File, name: "f.txt", size: 400 },
+      ]);
+
+      expect(tree.size).toEqual(610);
+      expect(tree.children[0].size).toEqual(210);
+      expect(tree.children[1].size).toEqual(400);
     });
   });
 

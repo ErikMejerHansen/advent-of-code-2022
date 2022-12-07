@@ -63,6 +63,15 @@ interface Leaf {
   size: number;
 }
 
+const populateDirectorySizes = (tree: Tree) => {
+  if (tree.children !== undefined) {
+    tree.children.forEach(populateDirectorySizes);
+  }
+  if (tree.parent === null) return;
+
+  tree.parent.size = tree.parent.size + tree.size;
+};
+
 const addChild = (
   lines: (CommandLine | DirectoryListingLine)[],
   parent: Tree
@@ -74,8 +83,7 @@ const addChild = (
   const item = lines.shift();
 
   if (item.type === DirectoryItem.File) {
-    parent.children.push({ name: item.name, size: item.size });
-    parent.size = parent.size + item.size;
+    parent.children.push({ name: item.name, size: item.size, parent: parent });
     addChild(lines, parent);
   }
 
@@ -88,8 +96,6 @@ const addChild = (
   }
 
   if (item.type === Command.CHANGE_DIR && item.destination === "..") {
-    // const directoryNode: Tree = { name: item.destination, children: [] };
-    // parent.children.push(directoryNode);
     addChild(lines, parent.parent);
   }
 
@@ -113,5 +119,6 @@ export const buildTree = (
   const root: Tree = { name: "/", children: [], parent: null, size: 0 };
 
   addChild(input, root);
+  populateDirectorySizes(root);
   return root;
 };
