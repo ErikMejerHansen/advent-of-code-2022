@@ -1,5 +1,7 @@
 // import * as fs from 'fs'
 
+import { readLines } from "../utils";
+
 // const data = fs.readFileSync('./src/07/data/data.txt').toString()
 export enum Command {
   CHANGE_DIR = "$ cd",
@@ -11,9 +13,10 @@ export enum DirectoryItem {
   File,
 }
 
-const parseCommand = (
-  line: string
-): { type: Command; destination?: string } => {
+type CommandLine = { type: Command; destination?: string };
+type DirectoryListingLine = { type: DirectoryItem; name: string; size: number };
+
+const parseCommand = (line: string): CommandLine => {
   const [_commandToken, command, destination] = line.split(" ");
   switch (command) {
     case "cd":
@@ -23,9 +26,7 @@ const parseCommand = (
   }
 };
 
-const parseDirectoryListing = (
-  line: string
-): { type: DirectoryItem; name: string; size: number } => {
+const parseDirectoryListing = (line: string): DirectoryListingLine => {
   if (line.startsWith("dir")) {
     const [_directoryToken, name] = line.split(" ");
     return { type: DirectoryItem.Directory, name: name, size: 0 };
@@ -46,3 +47,7 @@ export const parseLine = (
     return parseDirectoryListing(line);
   }
 };
+
+export const parseData = (
+  fileName: string
+): (CommandLine | DirectoryListingLine)[] => readLines(fileName).map(parseLine);
