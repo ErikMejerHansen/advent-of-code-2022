@@ -55,6 +55,7 @@ export const parseData = (
 interface Tree {
   name: string;
   children: Array<Tree | Leaf>;
+  parent: Tree;
 }
 interface Leaf {
   name: string;
@@ -87,11 +88,15 @@ const addChild = (
   if (item.type === Command.CHANGE_DIR && item.destination === "..") {
     // const directoryNode: Tree = { name: item.destination, children: [] };
     // parent.children.push(directoryNode);
-    addChild(lines, parent);
+    addChild(lines, parent.parent);
   }
 
-  if (item.type === Command.CHANGE_DIR) {
-    const directoryNode: Tree = { name: item.destination, children: [] };
+  if (item.type === Command.CHANGE_DIR && item.destination !== "..") {
+    const directoryNode: Tree = {
+      name: item.destination,
+      children: [],
+      parent,
+    };
     parent.children.push(directoryNode);
     addChild(lines, directoryNode);
   }
@@ -102,7 +107,7 @@ export const buildTree = (
 ): Tree => {
   input.shift(); // first line is always cd /
   input.shift(); // Second item is ls of root dir
-  const root: Tree = { name: "/", children: [] };
+  const root: Tree = { name: "/", children: [], parent: null };
 
   addChild(input, root);
   return root;

@@ -54,10 +54,14 @@ describe("Dec 07", () => {
           { type: Command.LIST_DIR },
           { type: DirectoryItem.File, name: "b.txt", size: 210 },
         ])
-      ).toEqual({ name: "/", children: [{ name: "b.txt", size: 210 }] });
+      ).toEqual({
+        name: "/",
+        children: [{ name: "b.txt", size: 210 }],
+        parent: null,
+      });
     });
 
-    it.only("can construct a tree with root and a sub-tree", () => {
+    it("can construct a tree with root and a sub-tree", () => {
       expect(
         buildTree([
           { type: Command.CHANGE_DIR, destination: "/" },
@@ -70,9 +74,11 @@ describe("Dec 07", () => {
         ])
       ).toEqual({
         name: "/",
+        parent: null,
         children: [
           {
             name: "b",
+            parent: expect.anything(),
             children: [
               { name: "c.txt", size: 210 },
               { name: "e.txt", size: 10 },
@@ -83,27 +89,36 @@ describe("Dec 07", () => {
     });
 
     it("can construct a tree with root and two sub-trees", () => {
-      expect(
-        buildTree([
-          { type: Command.CHANGE_DIR, destination: "/" },
-          { type: Command.LIST_DIR },
-          { type: DirectoryItem.Directory, name: "b", size: 0 },
-          { type: Command.CHANGE_DIR, destination: "b" },
-          { type: Command.LIST_DIR },
-          { type: DirectoryItem.File, name: "c.txt", size: 210 },
-          { type: Command.CHANGE_DIR, destination: ".." },
-          { type: Command.LIST_DIR },
-          { type: DirectoryItem.Directory, name: "e", size: 0 },
-          { type: Command.CHANGE_DIR, destination: "e" },
-          { type: Command.LIST_DIR },
-          { type: DirectoryItem.File, name: "f.txt", size: 100 },
-        ])
-      ).toEqual({
+      const tree = buildTree([
+        { type: Command.CHANGE_DIR, destination: "/" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.Directory, name: "b", size: 0 },
+        { type: Command.CHANGE_DIR, destination: "b" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.File, name: "c.txt", size: 210 },
+        { type: Command.CHANGE_DIR, destination: ".." },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.Directory, name: "e", size: 0 },
+        { type: Command.CHANGE_DIR, destination: "e" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.File, name: "f.txt", size: 100 },
+      ]);
+
+      expect(tree).toEqual({
         name: "/",
         children: [
-          { name: "b", children: [{ name: "c.txt", size: 210 }] },
-          { name: "e", children: [{ name: "f.txt", size: 210 }] },
+          {
+            name: "b",
+            children: [{ name: "c.txt", size: 210 }],
+            parent: expect.anything(),
+          },
+          {
+            name: "e",
+            children: [{ name: "f.txt", size: 100 }],
+            parent: expect.anything(),
+          },
         ],
+        parent: null,
       });
     });
   });
