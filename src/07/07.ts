@@ -73,6 +73,7 @@ const addChild = (
 
   if (item.type === DirectoryItem.File) {
     parent.children.push({ name: item.name, size: item.size });
+    addChild(lines, parent);
   }
 
   if (item.type === DirectoryItem.Directory) {
@@ -80,6 +81,12 @@ const addChild = (
   }
 
   if (item.type === Command.LIST_DIR) {
+    addChild(lines, parent);
+  }
+
+  if (item.type === Command.CHANGE_DIR && item.destination === "..") {
+    // const directoryNode: Tree = { name: item.destination, children: [] };
+    // parent.children.push(directoryNode);
     addChild(lines, parent);
   }
 
