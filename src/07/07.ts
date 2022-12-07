@@ -9,8 +9,8 @@ export enum Command {
 }
 
 export enum DirectoryItem {
-  Directory,
-  File,
+  Directory = "directory",
+  File = "file",
 }
 
 type CommandLine = { type: Command; destination?: string };
@@ -61,9 +61,32 @@ interface Leaf {
   size: number;
 }
 
-const addChild = (item: CommandLine | DirectoryListingLine, parent: Tree) => {
+const addChild = (
+  lines: (CommandLine | DirectoryListingLine)[],
+  parent: Tree
+) => {
+  if (lines.length === 0) {
+    return;
+  }
+
+  const item = lines.shift();
+
   if (item.type === DirectoryItem.File) {
     parent.children.push({ name: item.name, size: item.size });
+  }
+
+  if (item.type === DirectoryItem.Directory) {
+    addChild(lines, parent);
+  }
+
+  if (item.type === Command.LIST_DIR) {
+    addChild(lines, parent);
+  }
+
+  if (item.type === Command.CHANGE_DIR) {
+    const directoryNode: Tree = { name: item.destination, children: [] };
+    parent.children.push(directoryNode);
+    addChild(lines, directoryNode);
   }
 };
 
@@ -71,9 +94,9 @@ export const buildTree = (
   input: (CommandLine | DirectoryListingLine)[]
 ): Tree => {
   input.shift(); // first line is always cd /
-  const root: Tree = { name: "/", children: [] };
   input.shift(); // Second item is ls of root dir
+  const root: Tree = { name: "/", children: [] };
 
-  addChild(input.shift(), root);
+  addChild(input, root);
   return root;
 };

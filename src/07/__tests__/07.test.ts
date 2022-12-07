@@ -56,6 +56,22 @@ describe("Dec 07", () => {
         ])
       ).toEqual({ name: "/", children: [{ name: "b.txt", size: 210 }] });
     });
+
+    it("can construct a tree with root and a sub-tree", () => {
+      expect(
+        buildTree([
+          { type: Command.CHANGE_DIR, destination: "/" },
+          { type: Command.LIST_DIR },
+          { type: DirectoryItem.Directory, name: "b", size: 0 },
+          { type: Command.CHANGE_DIR, destination: "b" },
+          { type: Command.LIST_DIR },
+          { type: DirectoryItem.File, name: "c.txt", size: 210 },
+        ])
+      ).toEqual({
+        name: "/",
+        children: [{ name: "b", children: [{ name: "c.txt", size: 210 }] }],
+      });
+    });
   });
 
   describe("Part 1", () => {
