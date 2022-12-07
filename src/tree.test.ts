@@ -29,11 +29,37 @@ describe("tree construction", () => {
 
     const subtree2 = new Tree();
     const leaf2 = new Tree("leaf");
-    subtree1.add(leaf2);
+    subtree2.add(leaf2);
 
     tree.add(subtree1, subtree2);
 
     expect(tree.children[0].children[0]).toBe(leaf1);
     expect(tree.children[1].children[0]).toBe(leaf2);
+  });
+});
+
+describe("tree traversal", () => {
+  it("can reduce a tree depth first", () => {
+    const tree = new Tree("root");
+
+    const subtree1 = new Tree("subtree1");
+    const leaf1 = new Tree("leaf[s1]");
+    subtree1.add(leaf1);
+
+    const subtree2 = new Tree("subtree2");
+    const leaf2 = new Tree("leaf[s2]");
+    subtree2.add(leaf2);
+
+    tree.add(subtree1, subtree2);
+
+    [1, 2, 3].reduce;
+
+    const reducer = (
+      previousValue: string,
+      currentNode: Tree<string>
+    ): string => previousValue + "-" + currentNode.value;
+
+    const reduction = tree.traverse(reducer, "");
+    expect(reduction).toEqual("-root-subtree1-leaf[s1]-subtree2-leaf[s2]");
   });
 });

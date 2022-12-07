@@ -18,4 +18,15 @@ export class Tree<V> {
   public add(...children: Tree<V>[]): void {
     this._children.push(...children);
   }
+
+  public traverse(
+    callbackfn: (previousValue: V, currentNode: Tree<V>) => V,
+    initialValue: V
+  ) {
+    const value = callbackfn(initialValue, this);
+    return this.children.reduce(
+      (prev, node) => node.traverse(callbackfn, prev),
+      value
+    );
+  }
 }
