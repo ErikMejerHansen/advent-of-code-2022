@@ -47,10 +47,14 @@ describe("Dec 07", () => {
   });
 
   describe("tree construction", () => {
-    it("can construct a tree with a root", () => {
+    it("can construct a tree with root and one leaf", () => {
       expect(
-        buildTree([{ type: Command.CHANGE_DIR, destination: "/" }])
-      ).toEqual({ name: "/", children: [] });
+        buildTree([
+          { type: Command.CHANGE_DIR, destination: "/" },
+          { type: Command.LIST_DIR },
+          { type: DirectoryItem.File, name: "b.txt", size: 210 },
+        ])
+      ).toEqual({ name: "/", children: [{ name: "b.txt", size: 210 }] });
     });
   });
 

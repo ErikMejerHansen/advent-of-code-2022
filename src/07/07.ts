@@ -61,11 +61,19 @@ interface Leaf {
   size: number;
 }
 
+const addChild = (item: CommandLine | DirectoryListingLine, parent: Tree) => {
+  if (item.type === DirectoryItem.File) {
+    parent.children.push({ name: item.name, size: item.size });
+  }
+};
+
 export const buildTree = (
   input: (CommandLine | DirectoryListingLine)[]
 ): Tree => {
-  const item = input.pop();
-  if (item.type === Command.CHANGE_DIR) {
-    return { name: item.destination, children: [] };
-  }
+  input.shift(); // first line is always cd /
+  const root: Tree = { name: "/", children: [] };
+  input.shift(); // Second item is ls of root dir
+
+  addChild(input.shift(), root);
+  return root;
 };
