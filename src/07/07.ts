@@ -51,3 +51,12 @@ export const parseLine = (
 export const parseData = (
   fileName: string
 ): (CommandLine | DirectoryListingLine)[] => readLines(fileName).map(parseLine);
+
+export const buildTree = (input: (CommandLine | DirectoryListingLine)[]) => {
+  const item = input.pop();
+  if (item.type === Command.CHANGE_DIR) {
+    return [
+      [{ type: DirectoryItem.Directory, name: item.destination, size: 0 }],
+    ];
+  }
+};

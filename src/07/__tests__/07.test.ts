@@ -1,6 +1,20 @@
-import { Command, DirectoryItem, parseLine } from "../07";
+import { buildTree, Command, DirectoryItem, parseData, parseLine } from "../07";
 
 describe("Dec 07", () => {
+  const command = (type: Command, destination: string = null) => {
+    if (destination === null) {
+      return { type };
+    } else {
+      return { type, destination };
+    }
+  };
+
+  const dirLine = (type: DirectoryItem, name: string, size = 0) => ({
+    type,
+    name,
+    size,
+  });
+
   describe("data parsing", () => {
     it("parses can parse commands", () => {
       expect(parseLine("$ cd /")).toEqual({
@@ -31,6 +45,15 @@ describe("Dec 07", () => {
       });
     });
   });
+
+  describe("tree construction", () => {
+    it("can construct a tree with a root", () => {
+      expect(
+        buildTree([{ type: Command.CHANGE_DIR, destination: "/" }])
+      ).toEqual([[{ type: DirectoryItem.Directory, name: "/", size: 0 }]]);
+    });
+  });
+
   describe("Part 1", () => {
     //
   });
