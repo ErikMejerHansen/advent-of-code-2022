@@ -157,12 +157,8 @@ export const directorySizes = (
       .filter((child) => child.kind === "tree")
       .map((subtree) => directorySizes(subtree, sizes));
 
-    return [...sizes];
+    return sizes;
   }
-
-  if (tree.kind === "leaf") return [];
-
-  return sizes;
 };
 
 export const parseToTree = (fileName: string): Tree => {
