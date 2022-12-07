@@ -1,20 +1,6 @@
-import { buildTree, Command, DirectoryItem, parseData, parseLine } from "../07";
+import { buildTree, Command, DirectoryItem, parseLine } from "../07";
 
 describe("Dec 07", () => {
-  const command = (type: Command, destination: string = null) => {
-    if (destination === null) {
-      return { type };
-    } else {
-      return { type, destination };
-    }
-  };
-
-  const dirLine = (type: DirectoryItem, name: string, size = 0) => ({
-    type,
-    name,
-    size,
-  });
-
   describe("data parsing", () => {
     it("parses can parse commands", () => {
       expect(parseLine("$ cd /")).toEqual({
@@ -120,6 +106,17 @@ describe("Dec 07", () => {
         ],
         parent: null,
       });
+    });
+
+    it("can calculate the directory sizes for root with two leaves", () => {
+      const tree = buildTree([
+        { type: Command.CHANGE_DIR, destination: "/" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.File, name: "b.txt", size: 210 },
+        { type: DirectoryItem.File, name: "d.txt", size: 100 },
+      ]);
+
+      expect(tree.size).toEqual(310);
     });
   });
 

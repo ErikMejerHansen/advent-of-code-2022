@@ -56,6 +56,7 @@ interface Tree {
   name: string;
   children: Array<Tree | Leaf>;
   parent: Tree;
+  size: number;
 }
 interface Leaf {
   name: string;
@@ -74,6 +75,7 @@ const addChild = (
 
   if (item.type === DirectoryItem.File) {
     parent.children.push({ name: item.name, size: item.size });
+    parent.size = parent.size + item.size;
     addChild(lines, parent);
   }
 
@@ -96,6 +98,7 @@ const addChild = (
       name: item.destination,
       children: [],
       parent,
+      size: 0,
     };
     parent.children.push(directoryNode);
     addChild(lines, directoryNode);
@@ -107,7 +110,7 @@ export const buildTree = (
 ): Tree => {
   input.shift(); // first line is always cd /
   input.shift(); // Second item is ls of root dir
-  const root: Tree = { name: "/", children: [], parent: null };
+  const root: Tree = { name: "/", children: [], parent: null, size: 0 };
 
   addChild(input, root);
   return root;
