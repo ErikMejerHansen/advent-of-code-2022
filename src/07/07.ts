@@ -13,6 +13,23 @@ export enum DirectoryItem {
   File = "file",
 }
 
+type TreeNode = Tree | Leaf;
+
+interface Tree {
+  name: string;
+  children: Array<Tree | Leaf>;
+  parent: Tree;
+  size: number;
+  kind: "tree";
+}
+
+interface Leaf {
+  name: string;
+  size: number;
+  kind: "leaf";
+  parent: Tree;
+}
+
 type CommandLine = { type: Command; destination?: string };
 type DirectoryListingLine = { type: DirectoryItem; name: string; size: number };
 
@@ -52,17 +69,6 @@ export const parseData = (
   fileName: string
 ): (CommandLine | DirectoryListingLine)[] => readLines(fileName).map(parseLine);
 
-interface Tree {
-  name: string;
-  children: Array<Tree | Leaf>;
-  parent: Tree;
-  size: number;
-}
-interface Leaf {
-  name: string;
-  size: number;
-}
-
 const populateDirectorySizes = (tree: Tree) => {
   if (tree.children !== undefined) {
     tree.children.forEach(populateDirectorySizes);
@@ -83,7 +89,12 @@ const addChild = (
   const item = lines.shift();
 
   if (item.type === DirectoryItem.File) {
-    parent.children.push({ name: item.name, size: item.size, parent: parent });
+    parent.children.push({
+      name: item.name,
+      size: item.size,
+      parent: parent,
+      kind: "leaf",
+    });
     addChild(lines, parent);
   }
 
@@ -105,6 +116,7 @@ const addChild = (
       children: [],
       parent,
       size: 0,
+      kind: "tree",
     };
     parent.children.push(directoryNode);
     addChild(lines, directoryNode);
@@ -116,9 +128,19 @@ export const buildTree = (
 ): Tree => {
   input.shift(); // first line is always cd /
   input.shift(); // Second item is ls of root dir
-  const root: Tree = { name: "/", children: [], parent: null, size: 0 };
+  const root: Tree = {
+    name: "/",
+    children: [],
+    parent: null,
+    size: 0,
+    kind: "tree",
+  };
 
   addChild(input, root);
   populateDirectorySizes(root);
   return root;
+};
+
+export const directoriesBelowLimit = (limit: number, tree: Tree): Tree[] => {
+  return [];
 };

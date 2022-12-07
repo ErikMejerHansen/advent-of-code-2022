@@ -1,4 +1,10 @@
-import { buildTree, Command, DirectoryItem, parseLine } from "../07";
+import {
+  buildTree,
+  Command,
+  directoriesBelowLimit,
+  DirectoryItem,
+  parseLine,
+} from "../07";
 
 describe("Dec 07", () => {
   describe("data parsing", () => {
@@ -42,8 +48,11 @@ describe("Dec 07", () => {
         ])
       ).toEqual({
         name: "/",
-        children: [{ name: "b.txt", size: 210, parent: expect.anything() }],
+        children: [
+          { name: "b.txt", size: 210, parent: expect.anything(), kind: "leaf" },
+        ],
         parent: null,
+        kind: "tree",
         size: expect.anything(),
       });
     });
@@ -63,14 +72,26 @@ describe("Dec 07", () => {
         name: "/",
         parent: null,
         size: expect.anything(),
+        kind: "tree",
         children: [
           {
             name: "b",
             parent: expect.anything(),
             size: expect.anything(),
+            kind: "tree",
             children: [
-              { name: "c.txt", size: 210, parent: expect.anything() },
-              { name: "e.txt", size: 10, parent: expect.anything() },
+              {
+                name: "c.txt",
+                size: 210,
+                parent: expect.anything(),
+                kind: "leaf",
+              },
+              {
+                name: "e.txt",
+                size: 10,
+                parent: expect.anything(),
+                kind: "leaf",
+              },
             ],
           },
         ],
@@ -99,18 +120,35 @@ describe("Dec 07", () => {
           {
             name: "b",
             size: expect.anything(),
-            children: [{ name: "c.txt", size: 210, parent: expect.anything() }],
+            children: [
+              {
+                name: "c.txt",
+                size: 210,
+                parent: expect.anything(),
+                kind: "leaf",
+              },
+            ],
             parent: expect.anything(),
+            kind: "tree",
           },
           {
             name: "e",
             size: expect.anything(),
-            children: [{ name: "f.txt", size: 100, parent: expect.anything() }],
+            children: [
+              {
+                name: "f.txt",
+                size: 100,
+                parent: expect.anything(),
+                kind: "leaf",
+              },
+            ],
             parent: expect.anything(),
+            kind: "tree",
           },
         ],
         parent: null,
         size: expect.anything(),
+        kind: "tree",
       });
     });
 
@@ -148,7 +186,26 @@ describe("Dec 07", () => {
   });
 
   describe("Part 1", () => {
-    //
+    it("can find directories below size limit", () => {
+      const tree = buildTree([
+        { type: Command.CHANGE_DIR, destination: "/" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.Directory, name: "b", size: 0 },
+        { type: Command.CHANGE_DIR, destination: "b" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.File, name: "c.txt", size: 210 },
+        { type: Command.CHANGE_DIR, destination: ".." },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.Directory, name: "e", size: 0 },
+        { type: Command.CHANGE_DIR, destination: "e" },
+        { type: Command.LIST_DIR },
+        { type: DirectoryItem.File, name: "f.txt", size: 400 },
+      ]);
+
+      expect(directoriesBelowLimit(400, tree)).toHaveLength(1);
+      expect(directoriesBelowLimit(401, tree)).toHaveLength(2);
+      expect(directoriesBelowLimit(1000, tree)).toHaveLength(3);
+    });
   });
 
   describe("Part 2", () => {
