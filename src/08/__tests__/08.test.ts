@@ -1,4 +1,10 @@
-import { evaluateRowVisibility, parse, parseFile } from "../08";
+import { transpose } from "../../utils";
+import {
+  determineTreeVisibilities,
+  evaluateRowVisibility,
+  parse,
+  parseFile,
+} from "../08";
 
 describe("Dec 08", () => {
   describe("data parsing", () => {
@@ -33,6 +39,19 @@ describe("Dec 08", () => {
       const row2 = [1, 4, 4, 5, 1];
       const visibilities2 = evaluateRowVisibility(row2);
       expect(visibilities2).toEqual([true, true, false, true, true]);
+    });
+
+    it("can determine the correct visibilities for the sample data", () => {
+      const trees = parseFile("src/08/__tests__/test-data.txt");
+      const visibilityMap = determineTreeVisibilities(trees);
+
+      expect(visibilityMap).toEqual([
+        [true, true, true, true, true],
+        [true, true, true, false, true],
+        [true, true, false, true, true],
+        [true, false, true, false, true],
+        [true, true, true, true, true],
+      ]);
     });
   });
 

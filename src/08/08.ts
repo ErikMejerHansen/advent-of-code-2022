@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { max, transpose } from "../utils";
 
 export const parse = (input: string) => {
   const treeHights = input
@@ -17,12 +18,34 @@ const leftToRightVisibility = (trees: number[]): boolean[] =>
     if (index === 0) return true;
     if (index === trees.length - 1) return true;
 
-    return trees[index - 1] < tree;
+    const treesToTheLeft = trees.slice(0, index);
+    const highestTreeToTheLeft = max(treesToTheLeft);
+    return highestTreeToTheLeft < tree;
   }, []);
 
-export const evaluateRowVisibility = (trees: number[]): boolean[] => {
-  const fromLeft = leftToRightVisibility(trees);
-  const fromRight = leftToRightVisibility(trees.reverse());
+const booleanOr = (a: boolean[], b: boolean[]): boolean[] =>
+  a.map((aBoolean, index) => aBoolean || b[index]);
 
-  return fromLeft.map((isVisible, index) => isVisible || fromRight[index]);
+export const evaluateRowVisibility = (trees: number[]): boolean[] => {
+  const fromLeft = leftToRightVisibility([...trees]);
+  const fromRight = leftToRightVisibility([...trees].reverse());
+
+  return booleanOr(fromLeft, fromRight);
 };
+
+export const determineTreeVisibilities = (trees: number[][]): boolean[][] => {
+  const rowVisibilities = trees.map(evaluateRowVisibility);
+  const transposed = transpose(trees);
+  const transposedColumnVisibilities = transposed.map(evaluateRowVisibility);
+  const columnVisibilities = transpose(transposedColumnVisibilities);
+
+  return rowVisibilities.map((row, index) =>
+    booleanOr(row, columnVisibilities[index])
+  );
+};
+
+// [true, true, true, true, true],
+// [true, true, true, false, true],
+// [true, true, false, true, true],
+// [true, false, true, false, true],
+// [true, true, true, true, true],
