@@ -20,6 +20,7 @@ const leftToRightVisibility = (trees: number[]): boolean[] =>
 
     const treesToTheLeft = trees.slice(0, index);
     const highestTreeToTheLeft = max(treesToTheLeft);
+
     return highestTreeToTheLeft < tree;
   }, []);
 
@@ -28,7 +29,7 @@ const booleanOr = (a: boolean[], b: boolean[]): boolean[] =>
 
 export const evaluateRowVisibility = (trees: number[]): boolean[] => {
   const fromLeft = leftToRightVisibility([...trees]);
-  const fromRight = leftToRightVisibility([...trees].reverse());
+  const fromRight = leftToRightVisibility([...trees].reverse()).reverse();
 
   return booleanOr(fromLeft, fromRight);
 };
