@@ -4,6 +4,7 @@ import {
   evaluateRowVisibility,
   parse,
   parseFile,
+  part1,
 } from "../08";
 
 describe("Dec 08", () => {
@@ -52,6 +53,14 @@ describe("Dec 08", () => {
         [true, false, true, false, true],
         [true, true, true, true, true],
       ]);
+    });
+
+    it("can determine the correct number of visible trees for the sample data", () => {
+      expect(part1("src/08/__tests__/test-data.txt")).toBe(21);
+    });
+
+    it.only("can determine the number of visible trees for the data to be 1785", () => {
+      expect(part1("src/08/data/data.txt")).toBe(1785);
     });
   });
 

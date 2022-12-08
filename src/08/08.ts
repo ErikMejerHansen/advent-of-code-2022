@@ -44,8 +44,9 @@ export const determineTreeVisibilities = (trees: number[][]): boolean[][] => {
   );
 };
 
-// [true, true, true, true, true],
-// [true, true, true, false, true],
-// [true, true, false, true, true],
-// [true, false, true, false, true],
-// [true, true, true, true, true],
+export const part1 = (fileName: string): number => {
+  const trees = parseFile(fileName);
+  const visibilityMap = determineTreeVisibilities(trees);
+
+  return visibilityMap.flat().filter((visible) => visible).length;
+};
