@@ -56,3 +56,6 @@ export const numericalSort = (
     direction === SortDirection.Ascending ? (a, b) => a - b : (a, b) => b - a;
   return array.sort(sortFunction);
 };
+
+export const max = (a: number[]) =>
+  numericalSort(a, SortDirection.Descending)[0];
