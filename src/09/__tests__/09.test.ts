@@ -1,4 +1,4 @@
-import { parseMove, updateTailPosition } from "../09";
+import { move, parseMove, updateTailPosition } from "../09";
 
 describe("Dec 09", () => {
   describe("rope movement", () => {
@@ -54,7 +54,13 @@ describe("Dec 09", () => {
     });
   });
 
-  describe("Part 1", () => {});
+  describe("Part 1", () => {
+    it("returns the new positions for the head and tail", () => {
+      expect(
+        move({ tailPosition: [0, 0], headPosition: [0, 1], movement: [0, 1] })
+      ).toEqual({ tailPosition: [0, 1], headPosition: [0, 2] });
+    });
+  });
 
   describe("Part 2", () => {
     //

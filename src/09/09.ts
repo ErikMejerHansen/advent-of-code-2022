@@ -1,4 +1,4 @@
-import { subtract } from "../utils";
+import { add, subtract } from "../utils";
 
 type Position = [number, number];
 export const updateTailPosition = (
@@ -41,4 +41,24 @@ export const parseMove = (input: string): [number, number] => {
     case "D":
       return [0, 1];
   }
+};
+
+export const move = ({
+  tailPosition,
+  headPosition,
+  movement,
+}: {
+  tailPosition: Position;
+  headPosition: Position;
+  movement: Position;
+}): { tailPosition: Position; headPosition: Position } => {
+  const updatedHeadPosition = add(headPosition, movement);
+  const updatedTailPosition = updateTailPosition(
+    tailPosition,
+    updatedHeadPosition
+  );
+  return {
+    tailPosition: updatedTailPosition,
+    headPosition: updatedHeadPosition,
+  };
 };
