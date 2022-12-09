@@ -1,4 +1,4 @@
-import { updateTailPosition } from "../09";
+import { parseMove, updateTailPosition } from "../09";
 
 describe("Dec 09", () => {
   describe("rope movement", () => {
@@ -42,9 +42,19 @@ describe("Dec 09", () => {
       expect(updateTailPosition([0, 0], [1, 2])).toEqual([1, 1]);
     });
   });
-  describe("Part 1", () => {
-    //
+
+  describe("data parsing", () => {
+    it.each([
+      ["R 4", [4, 0]],
+      ["U 3", [0, -3]],
+      ["L 2", [-2, 0]],
+      ["D 1", [0, 1]],
+    ])("parses %s  %j", (input, expected) => {
+      expect(parseMove(input)).toEqual(expected);
+    });
   });
+
+  describe("Part 1", () => {});
 
   describe("Part 2", () => {
     //
