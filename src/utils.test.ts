@@ -5,6 +5,7 @@ import {
   parseDataToNumberArray,
   parseStringArrayToNumberArray,
   SortDirection,
+  subtract,
   toSet,
   transpose,
   upsert,
@@ -103,5 +104,14 @@ describe("transpose", () => {
 describe("toSet", () => {
   it("can turn a string into a list of chars", () => {
     expect(toSet("abCDE")).toEqual(new Set(["a", "b", "C", "D", "E"]));
+  });
+});
+
+describe("vectors", () => {
+  it("can subtract vectors", () => {
+    expect(subtract([0, 0], [0, 0])).toEqual([0, 0]);
+    expect(subtract([1, 0], [0, 0])).toEqual([-1, 0]);
+    expect(subtract([0, 1], [0, 0])).toEqual([0, -1]);
+    expect(subtract([1, 1], [0, 0])).toEqual([-1, -1]);
   });
 });

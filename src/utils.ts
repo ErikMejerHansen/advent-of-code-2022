@@ -59,3 +59,8 @@ export const numericalSort = (
 
 export const max = (a: number[]) =>
   numericalSort(a, SortDirection.Descending)[0];
+
+export const subtract = (
+  a: [number, number],
+  b: [number, number]
+): [number, number] => [b[0] - a[0], b[1] - a[1]];
