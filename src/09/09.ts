@@ -62,3 +62,11 @@ export const move = ({
     headPosition: updatedHeadPosition,
   };
 };
+
+export const unique = (moves: Position[]): Position[] => {
+  return moves.filter((a, index) => {
+    const remaining = moves.slice(index + 1);
+
+    return remaining.every((b) => !(a[0] === b[0] && a[1] === b[1]));
+  });
+};

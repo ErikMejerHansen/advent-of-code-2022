@@ -1,4 +1,4 @@
-import { move, parseMove, updateTailPosition } from "../09";
+import { move, parseMove, unique, updateTailPosition } from "../09";
 
 describe("Dec 09", () => {
   describe("rope movement", () => {
@@ -80,6 +80,19 @@ describe("Dec 09", () => {
       expect(
         move({ tailPosition: [0, 0], headPosition: [0, 1], movement: [0, 1] })
       ).toEqual({ tailPosition: [0, 1], headPosition: [0, 2] });
+    });
+
+    it("can remove duplicates from a list positions", () => {
+      expect(
+        unique([
+          [0, 1],
+          [0, 1],
+          [1, 1],
+        ])
+      ).toEqual([
+        [0, 1],
+        [1, 1],
+      ]);
     });
   });
 
