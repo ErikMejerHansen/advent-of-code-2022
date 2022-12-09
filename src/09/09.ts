@@ -26,3 +26,19 @@ export const updateTailPosition = (
 
   return [0, 0];
 };
+
+export const parseMove = (input: string): [number, number] => {
+  const [direction, distanceString] = input.split(" ");
+  const distance = parseInt(distanceString);
+
+  switch (direction) {
+    case "R":
+      return [distance, 0];
+    case "U":
+      return [0, -distance];
+    case "L":
+      return [-distance, 0];
+    case "D":
+      return [0, 1];
+  }
+};
