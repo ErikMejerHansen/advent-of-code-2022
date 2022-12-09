@@ -1,4 +1,5 @@
 import {
+  add,
   findMaximum,
   Matrix,
   numericalSort,
@@ -113,5 +114,12 @@ describe("vectors", () => {
     expect(subtract([1, 0], [0, 0])).toEqual([-1, 0]);
     expect(subtract([0, 1], [0, 0])).toEqual([0, -1]);
     expect(subtract([1, 1], [0, 0])).toEqual([-1, -1]);
+  });
+
+  it("can add vectors", () => {
+    expect(add([0, 0], [0, 0])).toEqual([0, 0]);
+    expect(add([1, 0], [0, 0])).toEqual([1, 0]);
+    expect(add([0, 1], [0, 0])).toEqual([0, 1]);
+    expect(add([1, 1], [0, 0])).toEqual([1, 1]);
   });
 });

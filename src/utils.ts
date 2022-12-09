@@ -64,3 +64,8 @@ export const subtract = (
   a: [number, number],
   b: [number, number]
 ): [number, number] => [b[0] - a[0], b[1] - a[1]];
+
+export const add = (
+  a: [number, number],
+  b: [number, number]
+): [number, number] => [b[0] + a[0], b[1] + a[1]];
