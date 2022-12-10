@@ -1,4 +1,4 @@
-import { move, parseMove, part1, unique, updateTailPosition } from "../09";
+import { parseMove, part1, part2, unique, updateTailPosition } from "../09";
 
 describe("Dec 09", () => {
   describe("rope movement", () => {
@@ -78,16 +78,6 @@ describe("Dec 09", () => {
   });
 
   describe("Part 1", () => {
-    it("returns the new positions for the head and tail", () => {
-      expect(
-        move({
-          tailPosition: [0, 0],
-          headPosition: [0, 1],
-          movement: [0, 1],
-        })
-      ).toEqual({ updatedTailPosition: [0, 1], updatedHeadPosition: [0, 2] });
-    });
-
     it("can remove duplicates from a list positions", () => {
       expect(
         unique([
@@ -111,6 +101,12 @@ describe("Dec 09", () => {
   });
 
   describe("Part 2", () => {
-    //
+    it("calculates the number of unique tail positions as 36 for the sample data", () => {
+      expect(part2("src/09/__tests__/test-data-2.txt")).toEqual(36);
+    });
+
+    it("calculates the number of unique tail positions as 36 for the data", () => {
+      expect(part2("src/09/data/data.txt")).toEqual(36);
+    });
   });
 });
