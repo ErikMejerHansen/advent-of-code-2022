@@ -105,8 +105,8 @@ describe("Dec 09", () => {
       expect(part2("src/09/__tests__/test-data-2.txt")).toEqual(36);
     });
 
-    it("calculates the number of unique tail positions as 36 for the data", () => {
-      expect(part2("src/09/data/data.txt")).toEqual(36);
+    it("calculates the number of unique tail positions as 2630 for the data", () => {
+      expect(part2("src/09/data/data.txt")).toEqual(2630);
     });
   });
 });
