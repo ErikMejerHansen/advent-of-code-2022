@@ -9,10 +9,9 @@ import {
 describe("Dec 10", () => {
   describe("parsing", () => {
     it("can parse commands", () => {
-      expect(parseInstruction("noop")).toEqual({ opcode: "noop", cycles: 1 });
+      expect(parseInstruction("noop")).toEqual({ opcode: "noop" });
       expect(parseInstruction("addx 3")).toEqual({
         opcode: "addx",
-        cycles: 2,
         argument: 3,
       });
     });

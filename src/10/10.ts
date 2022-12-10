@@ -2,17 +2,16 @@ import { readLines } from "../utils";
 
 interface Instruction {
   opcode: "noop" | "addx";
-  cycles: 1 | 2;
   argument?: number;
 }
 
 export const parseInstruction = (command: string): Instruction => {
   if (command === "noop") {
     const opcode = "noop";
-    return { opcode, cycles: 1 };
+    return { opcode };
   } else {
     const [_opcode, argument] = command.split(" ");
-    return { opcode: "addx", cycles: 2, argument: parseInt(argument) };
+    return { opcode: "addx", argument: parseInt(argument) };
   }
 };
 
