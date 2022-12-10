@@ -1,4 +1,4 @@
-import { add, subtract } from "../utils";
+import { add, readLines, subtract } from "../utils";
 
 type Position = [number, number];
 export const updateTailPosition = (
@@ -8,23 +8,25 @@ export const updateTailPosition = (
   const [x, y] = subtract(tail, head);
 
   // Horizontal
-  if (x === 2 && y === 0) return [1, 0];
-  if (x === -2 && y === 0) return [-1, 0];
+  if (x === 2 && y === 0) return add(tail, [1, 0]);
+  if (x === -2 && y === 0) return add(tail, [-1, 0]);
 
   // Vertical
-  if (x === 0 && y === 2) return [0, 1];
-  if (x === 0 && y === -2) return [0, -1];
+  if (x === 0 && y === 2) return add(tail, [0, 1]);
+  if (x === 0 && y === -2) return add(tail, [0, -1]);
 
-  // Diagonals: Up and to the left
-  if (x === -1 && y === -2) return [-1, -1];
-  // Diagonals: Up and to the right
-  if (x === 1 && y === -2) return [1, -1];
-  // Diagonals: Down and to the left
-  if (x === -1 && y === 2) return [-1, 1];
-  // Diagonals: Down and to the right
-  if (x === 1 && y === 2) return [1, 1];
+  // Diagonals
+  if (x === -1 && y === -2) return add(tail, [-1, -1]);
+  if (x === 1 && y === -2) return add(tail, [1, -1]);
+  if (x === -1 && y === 2) return add(tail, [-1, 1]);
+  if (x === 1 && y === 2) return add(tail, [1, 1]);
+  if (x === 2 && y === -1) return add(tail, [1, -1]);
+  if (x === 2 && y === 1) return add(tail, [1, 1]);
+  if (x === -2 && y === 1) return add(tail, [-1, 1]);
+  if (x === -2 && y === -1) return add(tail, [-1, -1]);
 
-  return [0, 0];
+  // No movement
+  return tail;
 };
 
 export const parseMove = (input: string): [number, number][] => {
@@ -51,15 +53,15 @@ export const move = ({
   tailPosition: Position;
   headPosition: Position;
   movement: Position;
-}): { tailPosition: Position; headPosition: Position } => {
+}): { updatedTailPosition: Position; updatedHeadPosition: Position } => {
   const updatedHeadPosition = add(headPosition, movement);
   const updatedTailPosition = updateTailPosition(
     tailPosition,
     updatedHeadPosition
   );
   return {
-    tailPosition: updatedTailPosition,
-    headPosition: updatedHeadPosition,
+    updatedTailPosition: updatedTailPosition,
+    updatedHeadPosition: updatedHeadPosition,
   };
 };
 
@@ -69,4 +71,44 @@ export const unique = (moves: Position[]): Position[] => {
 
     return remaining.every((b) => !(a[0] === b[0] && a[1] === b[1]));
   });
+};
+
+interface MovementReducerReturn {
+  tailPosition: Position;
+  headPosition: Position;
+  tailHistory: Position[];
+}
+export const part1 = (fileName: string): number => {
+  const data = readLines(fileName);
+  const moves = data.map(parseMove).flat();
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { tailPosition, headPosition, tailHistory } = moves.reduce(
+    (
+      { tailPosition, headPosition, tailHistory }: MovementReducerReturn,
+      movement
+    ) => {
+      const { updatedTailPosition, updatedHeadPosition } = move({
+        tailPosition,
+        headPosition,
+        movement,
+      });
+
+      tailHistory.push(updatedTailPosition);
+
+      return {
+        tailPosition: updatedTailPosition,
+        headPosition: updatedHeadPosition,
+        tailHistory,
+      };
+    },
+    {
+      tailPosition: [0, 0],
+      headPosition: [0, 0],
+      tailHistory: new Array<Position>(),
+    }
+  );
+
+  console.log(unique(tailHistory));
+  return unique(tailHistory).length;
 };
