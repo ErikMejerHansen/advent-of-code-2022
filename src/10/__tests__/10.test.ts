@@ -1,5 +1,6 @@
 import {
   buildRegisterHistory,
+  draw,
   parseInstruction,
   part1,
   runInstruction,
@@ -55,6 +56,34 @@ describe("Dec 10", () => {
   });
 
   describe("Part 2", () => {
-    //
+    it("draws the the sample data correctly", () => {
+      const registerHistory = buildRegisterHistory(
+        "src/10/__tests__/test-data.txt"
+      );
+
+      expect(draw(registerHistory)).toEqual(
+        "##..##..##..##..##..##..##..##..##..##..\n" +
+          "###...###...###...###...###...###...###.\n" +
+          "####....####....####....####....####....\n" +
+          "#####.....#####.....#####.....#####.....\n" +
+          "######......######......######......####\n" +
+          "#######.......#######.......#######....."
+      );
+    });
+
+    it("draws the data correctly", () => {
+      const registerHistory = buildRegisterHistory("src/10/data/data.txt");
+      const result = draw(registerHistory);
+      console.log(result);
+
+      expect(result).toEqual(
+        "###...##..#....###..###..####..##..#..#.\n" +
+          "#..#.#..#.#....#..#.#..#....#.#..#.#..#.\n" +
+          "#..#.#....#....#..#.###....#..#..#.#..#.\n" +
+          "###..#.##.#....###..#..#..#...####.#..#.\n" +
+          "#.#..#..#.#....#.#..#..#.#....#..#.#..#.\n" +
+          "#..#..###.####.#..#.###..####.#..#..##.."
+      );
+    });
   });
 });
