@@ -109,6 +109,5 @@ export const part1 = (fileName: string): number => {
     }
   );
 
-  console.log(unique(tailHistory));
   return unique(tailHistory).length;
 };

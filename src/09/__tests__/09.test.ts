@@ -42,8 +42,6 @@ describe("Dec 09", () => {
     it("moves the tail when the head moved diagonally down and to the right", () => {
       expect(updateTailPosition([0, 0], [1, 1])).toEqual([0, 0]);
       expect(updateTailPosition([0, 0], [1, 2])).toEqual([1, 1]);
-
-      expect(updateTailPosition([2, -2], [4, -3])).toEqual([-1, -1]);
     });
   });
 
