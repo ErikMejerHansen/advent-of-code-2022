@@ -1,4 +1,3 @@
-import { transpose } from "../../utils";
 import {
   determineTreeVisibilities,
   evaluateRowVisibility,
