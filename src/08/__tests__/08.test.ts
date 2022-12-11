@@ -1,9 +1,14 @@
 import {
   determineTreeVisibilities,
   evaluateRowVisibility,
+  leftViewDistances,
   parse,
   parseFile,
   part1,
+  part2,
+  rightViewDistances,
+  rowVisibilityScore,
+  viewScores,
 } from "../08";
 
 describe("Dec 08", () => {
@@ -68,6 +73,30 @@ describe("Dec 08", () => {
   });
 
   describe("Part 2", () => {
-    //
+    it("can calculate the view distance when looking to the left", () => {
+      expect(leftViewDistances([2, 3, 4, 3, 2])).toEqual([0, 1, 2, 1, 1]);
+      expect(leftViewDistances([3, 3, 5, 4, 9])).toEqual([0, 1, 2, 1, 4]);
+    });
+
+    it("can calculate the view distance when looking to the right", () => {
+      expect(rightViewDistances([6, 5, 4, 3, 2])).toEqual([4, 3, 2, 1, 0]);
+      expect(rightViewDistances([3, 5, 3, 5, 3])).toEqual([1, 2, 1, 1, 0]);
+    });
+
+    it("can calculate the example view scores", () => {
+      const example = [
+        [3, 0, 3, 7, 3],
+        [2, 5, 5, 1, 2],
+        [6, 5, 3, 3, 2],
+        [3, 3, 5, 4, 9],
+        [3, 5, 3, 9, 0],
+      ];
+
+      expect(viewScores(example)[3][2]).toEqual(8);
+    });
+
+    it("can calculate the best view scores", () => {
+      expect(part2("src/08/data/data.txt")).toEqual(537600);
+    });
   });
 });

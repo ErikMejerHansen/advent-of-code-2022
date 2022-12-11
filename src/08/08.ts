@@ -51,3 +51,48 @@ export const part1 = (fileName: string): number => {
 
   return visibilityMap.flat().filter((visible) => visible).length;
 };
+
+export const leftViewDistances = (row: number[]): number[] => {
+  return row.map((tree, index) => {
+    if (index === 0) return 0;
+
+    const treeOrderWhenLookingLeft = row.slice(0, index).reverse();
+
+    for (let i = 0; i < treeOrderWhenLookingLeft.length; i++) {
+      if (treeOrderWhenLookingLeft[i] >= tree) {
+        return i + 1;
+      }
+    }
+    return index;
+  });
+};
+
+export const rightViewDistances = (row: number[]): number[] => {
+  return leftViewDistances([...row].reverse()).reverse();
+};
+
+export const rowVisibilityScore = (row: number[]): number[] => {
+  const leftViewScore = leftViewDistances(row);
+  const rightViewScore = rightViewDistances(row);
+
+  return leftViewScore.map((score, index) => score * rightViewScore[index]);
+};
+
+export const viewScores = (trees: number[][]): number[][] => {
+  const rowViewScores = trees.map(rowVisibilityScore);
+  const transposedTrees = transpose(trees);
+  const columnViewScores = transpose(transposedTrees.map(rowVisibilityScore));
+
+  const scores = rowViewScores.map((row, rowIndex) =>
+    row.map((score, colIndex) => score * columnViewScores[rowIndex][colIndex])
+  );
+
+  return scores;
+};
+
+export const part2 = (fileName: string): number => {
+  const trees = parseFile(fileName);
+  const scores = viewScores(trees);
+
+  return max(scores.flat());
+};
