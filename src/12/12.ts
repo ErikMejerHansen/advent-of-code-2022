@@ -9,17 +9,20 @@ const DOWN: Vector = [0, 1];
 const LEFT: Vector = [-1, 0];
 const RIGHT: Vector = [1, 0];
 
-const locateDestination = (heightMap: string): Vector => {
-  const rows = heightMap.split("\n");
+const findChar = (map: string, char: string): Vector => {
+  const rows = map.split("\n");
   for (let y = 0; y < rows.length; y++) {
     const columns = rows[y].split("");
     for (let x = 0; x < columns.length; x++) {
-      if (columns[x] === "E") {
+      if (columns[x] === char) {
         return [x, y];
       }
     }
   }
 };
+
+const locateEnd = (map: string): Vector => findChar(map, "E");
+const locateStart = (map: string): Vector => findChar(map, "S");
 
 const parseHeights = (map: string): HeightMap => {
   const heightMapRow = [];
@@ -41,18 +44,6 @@ const parseHeights = (map: string): HeightMap => {
   }
 
   return heightMapRow;
-};
-
-const parseHeightMap = (
-  map: string
-): { destination: Vector; heightMap: HeightMap } => {
-  const destination = locateDestination(map);
-  const heightMap = parseHeights(map);
-
-  return {
-    destination,
-    heightMap,
-  };
 };
 
 const isPathAvailable = (
@@ -146,7 +137,9 @@ const findShortestPath = (
 
 export const part1 = (fileName: string): number => {
   const data = fs.readFileSync(fileName).toString();
-  const { destination, heightMap } = parseHeightMap(data);
+  const heightMap = parseHeights(data);
+  const start = locateStart(data);
+  const end = locateEnd(data);
 
-  return findShortestPath([0, 0], destination, heightMap);
+  return findShortestPath(start, end, heightMap);
 };

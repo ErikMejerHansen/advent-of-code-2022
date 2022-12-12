@@ -5,6 +5,10 @@ describe("Dec 12", () => {
     it("finds the shortest path trough the sample data", () => {
       expect(part1("src/12/__tests__/test-data.txt")).toEqual(31);
     });
+
+    it("finds the shortest path trough the data", () => {
+      expect(part1("src/12/data/data.txt")).toEqual(350);
+    });
   });
 
   describe("Part 2", () => {
