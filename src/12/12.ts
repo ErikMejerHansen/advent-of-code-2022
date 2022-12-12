@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { add } from "../utils";
+import { add, numericalSort } from "../utils";
 
 type HeightMap = number[][];
 type Vector = [number, number];
@@ -142,4 +142,32 @@ export const part1 = (fileName: string): number => {
   const end = locateEnd(data);
 
   return findShortestPath(start, end, heightMap);
+};
+
+const findPointsOfElevationZero = (map: HeightMap): Vector[] => {
+  const elevationZeroPositions = new Array<Vector>();
+
+  for (let y = 0; y < map.length; y++) {
+    const columns = map[y];
+    for (let x = 0; x < columns.length; x++) {
+      if (columns[x] === 0) {
+        elevationZeroPositions.push([x, y]);
+      }
+    }
+  }
+  return elevationZeroPositions;
+};
+
+export const part2 = (fileName: string): number => {
+  const data = fs.readFileSync(fileName).toString();
+  const heightMap = parseHeights(data);
+  const end = locateEnd(data);
+
+  const lowPoints = findPointsOfElevationZero(heightMap);
+
+  const lengths = lowPoints.map((start) =>
+    findShortestPath(start, end, heightMap)
+  );
+
+  return numericalSort(lengths)[0];
 };

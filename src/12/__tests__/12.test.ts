@@ -1,4 +1,4 @@
-import { part1 } from "../12";
+import { part1, part2 } from "../12";
 
 describe("Dec 12", () => {
   describe("Part 1", () => {
@@ -12,6 +12,12 @@ describe("Dec 12", () => {
   });
 
   describe("Part 2", () => {
-    //
+    it("finds the shortest path from elevation 0 the destination in the example data", () => {
+      expect(part2("src/12/__tests__/test-data.txt")).toEqual(29);
+    });
+
+    it("finds the shortest path from elevation 0 the destination in the data", () => {
+      expect(part2("src/12/data/data.txt")).toEqual(29);
+    });
   });
 });
