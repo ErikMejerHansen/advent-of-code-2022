@@ -5,11 +5,13 @@ export class Monkey {
   private _recipientWhenTestIsFalse: Monkey;
   private _recipientWhenTestIsTrue: Monkey;
   private _numberOfItemsInspected = 0;
+  private _worryRelaxer: (number) => number;
 
   public constructor(
     inventory: number[],
     transform: (number) => number,
     test: (number) => boolean,
+    worryRelaxer: (number) => number,
     monkeyFalse?: Monkey,
     monkeyTrue?: Monkey
   ) {
@@ -18,6 +20,7 @@ export class Monkey {
     this._test = test;
     this._recipientWhenTestIsFalse = monkeyFalse;
     this._recipientWhenTestIsTrue = monkeyTrue;
+    this._worryRelaxer = worryRelaxer;
   }
 
   public get inventory() {
@@ -60,7 +63,7 @@ export class Monkey {
     for (let i = 0; i < this.inventory.length; i++) {
       const item = this.inventory[i];
       const newWorry = this.transform(item);
-      const relaxedWorry = Math.floor(newWorry / 3);
+      const relaxedWorry = this._worryRelaxer(newWorry);
 
       if (this.test(relaxedWorry)) {
         this._recipientWhenTestIsTrue.catch(relaxedWorry);
@@ -80,53 +83,63 @@ export class Monkey {
     }
   }
 
-  public static buildMonkeys(): Monkey[] {
+  public static buildMonkeys(
+    worryLevelRelaxer = (worry) => Math.floor(worry / 3)
+  ): Monkey[] {
     const monkey0 = new Monkey(
       [66, 79],
       (old) => old * 11,
-      (old) => old % 7 === 0
+      (old) => old % 7 === 0,
+      worryLevelRelaxer
     );
 
     const monkey1 = new Monkey(
       [84, 94, 94, 81, 98, 75],
       (old) => old * 17,
-      (old) => old % 13 === 0
+      (old) => old % 13 === 0,
+      worryLevelRelaxer
     );
 
     const monkey2 = new Monkey(
       [85, 79, 59, 64, 79, 95, 67],
       (old) => old + 8,
-      (old) => old % 5 === 0
+      (old) => old % 5 === 0,
+      worryLevelRelaxer
     );
 
     const monkey3 = new Monkey(
       [70],
       (old) => old + 3,
-      (old) => old % 19 === 0
+      (old) => old % 19 === 0,
+      worryLevelRelaxer
     );
 
     const monkey4 = new Monkey(
       [57, 69, 78, 78],
       (old) => old + 4,
-      (old) => old % 2 === 0
+      (old) => old % 2 === 0,
+      worryLevelRelaxer
     );
 
     const monkey5 = new Monkey(
       [65, 92, 60, 74, 72],
       (old) => old + 7,
-      (old) => old % 11 === 0
+      (old) => old % 11 === 0,
+      worryLevelRelaxer
     );
 
     const monkey6 = new Monkey(
       [77, 91, 91],
       (old) => old * old,
-      (old) => old % 17 === 0
+      (old) => old % 17 === 0,
+      worryLevelRelaxer
     );
 
     const monkey7 = new Monkey(
       [76, 58, 57, 55, 67, 77, 54, 99],
       (old) => old + 6,
-      (old) => old % 3 === 0
+      (old) => old % 3 === 0,
+      worryLevelRelaxer
     );
 
     monkey0.recipientWhenTestIsTrue = monkey6;
@@ -164,30 +177,35 @@ export class Monkey {
       monkey7,
     ];
   }
-
-  public static buildTestDataMonkeys(): Monkey[] {
+  public static buildTestDataMonkeys(
+    worryLevelRelaxer = (worry) => Math.floor(worry / 3)
+  ): Monkey[] {
     const monkey0 = new Monkey(
       [79, 98],
       (w) => w * 19,
-      (w) => w % 23 === 0
+      (w) => w % 23 === 0,
+      worryLevelRelaxer
     );
 
     const monkey1 = new Monkey(
       [54, 65, 75, 74],
       (w) => w + 6,
-      (w) => w % 19 === 0
+      (w) => w % 19 === 0,
+      worryLevelRelaxer
     );
 
     const monkey2 = new Monkey(
       [79, 60, 97],
       (w) => w * w,
-      (w) => w % 13 === 0
+      (w) => w % 13 === 0,
+      worryLevelRelaxer
     );
 
     const monkey3 = new Monkey(
       [74],
       (w) => w + 3,
-      (w) => w % 17 === 0
+      (w) => w % 17 === 0,
+      worryLevelRelaxer
     );
 
     monkey0.recipientWhenTestIsTrue = monkey2;

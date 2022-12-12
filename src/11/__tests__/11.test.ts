@@ -50,6 +50,7 @@ describe("Dec 11", () => {
         [79, 98],
         identityFunction,
         alwaysTrue,
+        (_x) => 3,
         monkeyFalse,
         null
       );
@@ -58,8 +59,22 @@ describe("Dec 11", () => {
     });
 
     test("monkeys have a target to throw to when test is true", () => {
-      const monkeyTrue = new Monkey([79, 98], null, null, null, null);
-      const monkey = new Monkey([79, 98], null, null, null, monkeyTrue);
+      const monkeyTrue = new Monkey(
+        [79, 98],
+        null,
+        null,
+        (_x) => 3,
+        null,
+        null
+      );
+      const monkey = new Monkey(
+        [79, 98],
+        null,
+        null,
+        (_x) => 3,
+        null,
+        monkeyTrue
+      );
 
       expect(monkey.recipientWhenTestIsTrue).toEqual(monkeyTrue);
     });
@@ -76,6 +91,7 @@ describe("Dec 11", () => {
         [10],
         identityFunction,
         testFunction,
+        (_x) => 3,
         null,
         recipientWhenTrue
       );
@@ -94,6 +110,7 @@ describe("Dec 11", () => {
         [10],
         identityFunction,
         testFunction,
+        (_x) => 3,
         recipientWhenFalse,
         null
       );
@@ -111,6 +128,7 @@ describe("Dec 11", () => {
         [10],
         identityFunction,
         (_w) => true,
+        (_x) => 3,
         emptyMonkey,
         emptyMonkey
       );
@@ -173,6 +191,20 @@ describe("Dec 11", () => {
   });
 
   describe("Part 2", () => {
-    //
+    test("that the monkey business level is 11741456163", () => {
+      const monkeys = Monkey.buildMonkeys((worry) => worry % 9_699_690);
+      Monkey.business(monkeys, 10000);
+
+      const itemsInspected = monkeys.map(
+        (monkey) => monkey.numberOfItemsInspected
+      );
+
+      const [mostInspected, secondMostInspected, _rest] = numericalSort(
+        itemsInspected,
+        SortDirection.Descending
+      );
+
+      expect(mostInspected * secondMostInspected).toEqual(11741456163);
+    });
   });
 });
