@@ -69,15 +69,35 @@ const RIGHT: Vector = [0, 1];
 
 const isPathAvailable = (
   [x, y]: Vector,
-  currentHight: number,
   heightMap: HeightMap,
-  tabooList: string[]
+  tabooList: string[],
+  currentHeight: number
 ) => {
   if (tabooList.includes(`${x}-${y}`)) return false;
   if (x < 0 || y < 0) return false;
   if (y > heightMap.length - 1 || x > heightMap[y].length - 1) return false;
 
-  return heightMap[y][x] < currentHight + 1;
+  return heightMap[y][x] < currentHeight + 1;
+};
+
+const traverseDirection = (
+  position: Vector,
+  direction: Vector,
+  map: HeightMap,
+  tabooList: string[],
+  destination: Vector
+): Edge | undefined => {
+  const targetPosition = add(position, direction);
+
+  const height = map[position[1]][position[0]];
+
+  if (isPathAvailable(targetPosition, map, tabooList, height)) {
+    const node = buildSubgraph(map, targetPosition, destination, [
+      ...tabooList,
+    ]);
+    const edge = { to: node };
+    return edge;
+  }
 };
 
 const buildSubgraph = (
@@ -96,49 +116,49 @@ const buildSubgraph = (
   }
 
   // Up
-  const upPosition = add([x, y], UP);
-  if (isPathAvailable(upPosition, height, heightMap, tabooList)) {
-    const node = buildSubgraph(heightMap, upPosition, destination, [
-      ...tabooList,
-    ]);
-    const edge: Edge = { to: node };
-    edges.push(edge);
-  }
+  const upEdge = traverseDirection(
+    [x, y],
+    UP,
+    heightMap,
+    tabooList,
+    destination
+  );
 
   // Down
-  const downPosition = add([x, y], DOWN);
-  if (isPathAvailable(downPosition, height, heightMap, tabooList)) {
-    const node = buildSubgraph(heightMap, downPosition, destination, [
-      ...tabooList,
-    ]);
-    const edge: Edge = { to: node };
-    edges.push(edge);
-  }
+  const downEdge = traverseDirection(
+    [x, y],
+    DOWN,
+    heightMap,
+    tabooList,
+    destination
+  );
 
   // Left
-  const leftPosition = add([x, y], LEFT);
-  if (isPathAvailable(leftPosition, height, heightMap, tabooList)) {
-    const node = buildSubgraph(heightMap, leftPosition, destination, [
-      ...tabooList,
-    ]);
-    const edge: Edge = { to: node };
-    edges.push(edge);
-  }
 
+  const leftEdge = traverseDirection(
+    [x, y],
+    LEFT,
+    heightMap,
+    tabooList,
+    destination
+  );
   // right
-  const rightPosition = add([x, y], RIGHT);
-  if (isPathAvailable(rightPosition, height, heightMap, tabooList)) {
-    const node = buildSubgraph(
-      heightMap,
-      rightPosition,
-      destination,
-      tabooList
-    );
-    const edge: Edge = { to: node };
-    edges.push(edge);
-  }
+  const rightEdge = traverseDirection(
+    [x, y],
+    RIGHT,
+    heightMap,
+    tabooList,
+    destination
+  );
 
-  return { edges, height, isDestination: false, isStart: isStart };
+  return {
+    edges: [upEdge, downEdge, leftEdge, rightEdge].filter(
+      (edge) => edge !== undefined
+    ),
+    height,
+    isDestination: false,
+    isStart: isStart,
+  };
 };
 
 export const buildDAG = (
