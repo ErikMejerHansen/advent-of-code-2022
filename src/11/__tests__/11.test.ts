@@ -66,21 +66,6 @@ describe("Dec 11", () => {
   });
 
   describe("Part 1", () => {
-    // test("worry will is transformed when monkey inspects item", () => {
-    //   const transformFunction = jest.fn((_worry) => 42);
-    //   const monkey = new Monkey([0], transformFunction, null, null, null);
-
-    //   monkey.takeTurn();
-    //   expect(transformFunction).toHaveBeenCalledWith(0);
-    // });
-
-    // test("worry will decrease to 1/3 (rounded down)", () => {
-    //   const monkey = new Monkey([10], identityFunction, null, null, null);
-
-    //   monkey.takeTurn();
-    //   expect(monkey.inventory[0]).toEqual(3);
-    // });
-
     test("monkey will trow to expected monkey when test is true", () => {
       const recipientWhenTrue = new Monkey([], null, null, null, null);
 

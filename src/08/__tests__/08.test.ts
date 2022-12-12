@@ -7,7 +7,6 @@ import {
   part1,
   part2,
   rightViewDistances,
-  rowVisibilityScore,
   viewScores,
 } from "../08";
 
