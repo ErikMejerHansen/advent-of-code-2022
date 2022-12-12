@@ -17,7 +17,7 @@ describe("Dec 12", () => {
     });
 
     it("finds the shortest path from elevation 0 the destination in the data", () => {
-      expect(part2("src/12/data/data.txt")).toEqual(29);
+      expect(part2("src/12/data/data.txt")).toEqual(349);
     });
   });
 });
