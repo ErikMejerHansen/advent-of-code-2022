@@ -1,4 +1,5 @@
-import { add } from "../utils";
+import * as fs from "fs";
+import { add, numericalSort } from "../utils";
 
 interface Edge {
   to: Node;
@@ -62,10 +63,10 @@ const parseHeightMap = (
   };
 };
 
-const UP: Vector = [-1, 0];
-const DOWN: Vector = [1, 0];
-const LEFT: Vector = [0, -1];
-const RIGHT: Vector = [0, 1];
+const UP: Vector = [0, -1];
+const DOWN: Vector = [0, 1];
+const LEFT: Vector = [-1, 0];
+const RIGHT: Vector = [1, 0];
 
 const isPathAvailable = (
   [x, y]: Vector,
@@ -77,19 +78,19 @@ const isPathAvailable = (
   if (x < 0 || y < 0) return false;
   if (y > heightMap.length - 1 || x > heightMap[y].length - 1) return false;
 
-  return heightMap[y][x] < currentHeight + 1;
+  return heightMap[y][x] <= currentHeight + 1;
 };
 
 const traverseDirection = (
-  position: Vector,
+  [x, y]: Vector,
   direction: Vector,
   map: HeightMap,
   tabooList: string[],
   destination: Vector
 ): Edge | undefined => {
-  const targetPosition = add(position, direction);
+  const targetPosition = add([x, y], direction);
 
-  const height = map[position[1]][position[0]];
+  const height = map[y][x];
 
   if (isPathAvailable(targetPosition, map, tabooList, height)) {
     const node = buildSubgraph(map, targetPosition, destination, [
@@ -108,7 +109,6 @@ const buildSubgraph = (
   isStart = false
 ): Node => {
   const height = heightMap[y][x];
-  const edges = new Array<Edge>();
   tabooList.push(`${x}-${y}`);
 
   if (x === destination[0] && y === destination[1]) {
@@ -179,4 +179,32 @@ export const buildDAG = (
   return {
     start,
   };
+};
+
+const breadthFirst = (node: Node, depth = 0) => {
+  const queue = new Array<Node>(...node.edges.map((edge) => edge.to));
+
+  if (node.isDestination) {
+    console.log("Found destination:", depth);
+    return depth;
+  }
+
+  queue.forEach((node) => {
+    return breadthFirst(node, depth + 1);
+  });
+};
+
+const findShortestPath = (dag: DirectedAcyclicGraph): number => {
+  const shortestPath = breadthFirst(dag.start);
+
+  return shortestPath;
+};
+
+export const part1 = (fileName: string): number => {
+  const data = fs.readFileSync(fileName).toString();
+  const dag = buildDAG(data, [0, 0]);
+
+  const shortestPath = findShortestPath(dag);
+
+  return shortestPath;
 };
