@@ -17,6 +17,10 @@ describe("Dec 13", () => {
         expect(compare(4, [5])).toBe(true);
         expect(compare([10], 0)).toBe(false);
       });
+
+      it("can handle nested lists", () => {
+        // expect(compare([[4]], [[5]])).toBe(true);
+      });
     });
   });
 
