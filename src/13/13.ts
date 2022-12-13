@@ -6,4 +6,12 @@ export const compare = (left: number | number[], right: number | number[]) => {
   if (Array.isArray(left) && Array.isArray(right)) {
     return left.every((value, index) => compare(value, right[index]));
   }
+
+  if (Array.isArray(right)) {
+    return [left].every((value, index) => compare(value, right[index]));
+  }
+
+  if (Array.isArray(left)) {
+    return left.every((value) => compare(value, right));
+  }
 };

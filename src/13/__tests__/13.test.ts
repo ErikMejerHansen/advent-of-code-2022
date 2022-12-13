@@ -12,6 +12,11 @@ describe("Dec 13", () => {
         expect(compare([4], [5])).toBe(true);
         expect(compare([11], [5])).toBe(false);
       });
+
+      it("returns true if the left side is a scalar and the right value is a list (and vice versa)", () => {
+        expect(compare(4, [5])).toBe(true);
+        expect(compare([10], 0)).toBe(false);
+      });
     });
   });
 
