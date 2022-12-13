@@ -103,3 +103,19 @@ export const part1 = (fileName: string): number => {
 export const sortPackages = (packages) => {
   return packages.sort(compare);
 };
+
+const findFirstDividerMarkerIndex = (packages): number =>
+  packages.map(JSON.stringify).indexOf("[[2]]") + 1;
+
+const findSecondDividerMarkerIndex = (packages): number =>
+  packages.map(JSON.stringify).indexOf("[[6]]") + 1;
+
+export const part2 = (fileName: string) => {
+  const packages = parse(fileName);
+  const sorted = sortPackages([...packages, [[2]], [[6]]]);
+
+  const firstIndex = findFirstDividerMarkerIndex(sorted);
+  const secondIndex = findSecondDividerMarkerIndex(sorted);
+
+  return firstIndex * secondIndex;
+};

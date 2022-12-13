@@ -1,4 +1,4 @@
-import { isOrderCorrect, parse, part1, sortPackages } from "../13";
+import { isOrderCorrect, parse, part1, part2, sortPackages } from "../13";
 
 describe("Dec 13", () => {
   describe("parsing", () => {
@@ -87,10 +87,17 @@ describe("Dec 13", () => {
       ];
 
       const data = parse("src/13/__tests__/test-data.txt");
-
       const sorted = sortPackages([...data, [[2]], [[6]]]);
 
       expect(sorted).toEqual(expectedOrder);
+    });
+
+    it("calculates the product of the marker indexes as 140 for the example data", () => {
+      expect(part2("src/13/__tests__/test-data.txt")).toEqual(140);
+    });
+
+    it("calculates the product of the marker indexes as 20280", () => {
+      expect(part2("src/13/data/data.txt")).toEqual(20280);
     });
   });
 });
