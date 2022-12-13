@@ -1,6 +1,14 @@
-import { compare } from "../13";
+import { compare, parse, part1 } from "../13";
 
 describe("Dec 13", () => {
+  describe("parsing", () => {
+    it("can parse the example data", () => {
+      const parsed = parse("src/13/__tests__/test-data.txt");
+      expect(parsed[0]).toEqual([1, 1, 3, 1, 1]);
+      expect(parsed[12]).toEqual([[[]]]);
+    });
+  });
+
   describe("Part 1", () => {
     describe("comparisons", () => {
       it("returns true if values are numbers and left is smaller, otherwise false", () => {
@@ -30,9 +38,9 @@ describe("Dec 13", () => {
 
       it.each([
         [[1, 1, 3, 1, 1], [1, 1, 5, 1, 1], true],
-        [[[1], [2, 3, 4]], [[1], 4], false], // https://adventofcode.com/2022/day/13 shows this example as evaluating as true - but to me it looks like right side runs out of items first
+        [[[1], [2, 3, 4]], [[1], 4], true],
         [[9], [[8, 7, 6]], false],
-        [[[4, 4], 4, 4], [[4, 4], 4, 4, 4], false],
+        [[[4, 4], 4, 4], [[4, 4], 4, 4, 4], true],
         [[7, 7, 7, 7], [7, 7, 7], false],
         [[], [3], true],
         [[[[]]], [[]], false],
@@ -44,6 +52,14 @@ describe("Dec 13", () => {
       ])("will compare %j and %j and return %s", (left, right, expected) => {
         expect(compare(left, right)).toBe(expected);
       });
+    });
+
+    it("finds the sum of valid pair indexes as 13 for the example data", () => {
+      expect(part1("src/13/__tests__/test-data.txt")).toBe(13);
+    });
+
+    it("finds the sum of valid pair indexes as 13 for the data", () => {
+      expect(part1("src/13/data/data.txt")).toBe(13);
     });
   });
 
