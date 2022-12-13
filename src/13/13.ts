@@ -1,25 +1,48 @@
 const scalarCompare = (left: number, right: number) => left < right;
-const scalarListCompare = (left: number[], right: number[]) =>
-  left.every((value, index) => compare(value, right[index]));
-const scalarLeftListRightCompare = (left: number, right: number[]) =>
-  scalarListCompare([left], right);
-const listLeftScalarRightCompare = (left: number[], right: number) =>
-  scalarListCompare(left, [right]);
 
-export const compare = (left: number | number[], right: number | number[]) => {
+export const compare = (left: any, right: any) => {
   if (typeof left === "number" && typeof right === "number") {
     return scalarCompare(left, right);
   }
 
+  if (
+    Array.isArray(left) &&
+    left.length === 0 &&
+    Array.isArray(right) &&
+    right.length === 0
+  ) {
+    return true;
+  }
+
+  if (
+    Array.isArray(left) &&
+    left.length === 0 &&
+    Array.isArray(right) &&
+    right.length > 0
+  ) {
+    return true;
+  }
+
+  if (
+    Array.isArray(left) &&
+    left.length > 0 &&
+    Array.isArray(right) &&
+    right.length === 0
+  ) {
+    return true;
+  }
+
   if (Array.isArray(left) && Array.isArray(right)) {
-    return scalarListCompare(left, right);
+    const [leftHead, ...leftTail] = left;
+    const [rightHead, ...rightTail] = right;
+    return compare(leftHead, rightHead) && compare(leftTail, rightTail);
   }
 
   if (typeof left === "number" && Array.isArray(right)) {
-    return scalarLeftListRightCompare(left, right);
+    return compare([left], right);
   }
 
   if (Array.isArray(left) && typeof right === "number") {
-    return listLeftScalarRightCompare(left, right);
+    return compare(left, [right]);
   }
 };
