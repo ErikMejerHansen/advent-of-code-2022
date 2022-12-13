@@ -1,4 +1,4 @@
-import { compare, parse, part1 } from "../13";
+import { isOrderCorrect, parse, part1, sortPackages } from "../13";
 
 describe("Dec 13", () => {
   describe("parsing", () => {
@@ -12,28 +12,28 @@ describe("Dec 13", () => {
   describe("Part 1", () => {
     describe("comparisons", () => {
       it("returns true if values are numbers and left is smaller, otherwise false", () => {
-        expect(compare(4, 5)).toBe(true);
-        expect(compare(10, 4)).toBe(false);
+        expect(isOrderCorrect(4, 5)).toBe(true);
+        expect(isOrderCorrect(10, 4)).toBe(false);
       });
 
       it("returns true if the left and right are lists and the bigger numbers are in right", () => {
-        expect(compare([4], [5])).toBe(true);
-        expect(compare([11], [5])).toBe(false);
+        expect(isOrderCorrect([4], [5])).toBe(true);
+        expect(isOrderCorrect([11], [5])).toBe(false);
 
-        expect(compare([11, 12], [54, 70])).toBe(true);
-        expect(compare([110, 12], [54, 70])).toBe(false);
+        expect(isOrderCorrect([11, 12], [54, 70])).toBe(true);
+        expect(isOrderCorrect([110, 12], [54, 70])).toBe(false);
 
-        expect(compare([110, 12], [54])).toBe(false);
-        expect(compare([110], [154, 100])).toBe(true);
+        expect(isOrderCorrect([110, 12], [54])).toBe(false);
+        expect(isOrderCorrect([110], [154, 100])).toBe(true);
       });
 
       it("returns true if the left side is a scalar and the right value is a list (and vice versa)", () => {
-        expect(compare(4, [5])).toBe(true);
-        expect(compare([10], 0)).toBe(false);
+        expect(isOrderCorrect(4, [5])).toBe(true);
+        expect(isOrderCorrect([10], 0)).toBe(false);
       });
 
       it("can handle one level of nesting", () => {
-        expect(compare([4], [[5]])).toBe(true);
+        expect(isOrderCorrect([4], [[5]])).toBe(true);
       });
 
       it.each([
@@ -50,7 +50,7 @@ describe("Dec 13", () => {
           false,
         ],
       ])("will compare %j and %j and return %s", (left, right, expected) => {
-        expect(compare(left, right)).toBe(expected);
+        expect(isOrderCorrect(left, right)).toBe(expected);
       });
     });
 
@@ -58,12 +58,39 @@ describe("Dec 13", () => {
       expect(part1("src/13/__tests__/test-data.txt")).toBe(13);
     });
 
-    it("finds the sum of valid pair indexes as 13 for the data", () => {
-      expect(part1("src/13/data/data.txt")).toBe(13);
+    it("finds the sum of valid pair indexes as 5003 for the data", () => {
+      expect(part1("src/13/data/data.txt")).toBe(5003);
     });
   });
 
   describe("Part 2", () => {
-    //
+    it("can sort the example data and divider packets", () => {
+      const expectedOrder = [
+        [],
+        [[]],
+        [[[]]],
+        [1, 1, 3, 1, 1],
+        [1, 1, 5, 1, 1],
+        [[1], [2, 3, 4]],
+        [1, [2, [3, [4, [5, 6, 0]]]], 8, 9],
+        [1, [2, [3, [4, [5, 6, 7]]]], 8, 9],
+        [[1], 4],
+        [[2]],
+        [3],
+        [[4, 4], 4, 4],
+        [[4, 4], 4, 4, 4],
+        [[6]],
+        [7, 7, 7],
+        [7, 7, 7, 7],
+        [[8, 7, 6]],
+        [9],
+      ];
+
+      const data = parse("src/13/__tests__/test-data.txt");
+
+      const sorted = sortPackages([...data, [[2]], [[6]]]);
+
+      expect(sorted).toEqual(expectedOrder);
+    });
   });
 });

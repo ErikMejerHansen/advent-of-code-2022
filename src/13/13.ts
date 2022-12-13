@@ -1,14 +1,18 @@
 import { readLines } from "../utils";
 
-const scalarCompare = (left: number, right: number) => left < right;
+const WRONG_ORDER = 1;
+const CORRECT_ORDER = -1;
+const EQUALITY = 0;
 
-export const compare = (left, right) => {
+export const compare = (left, right): number => {
   if (typeof left === "number" && typeof right === "number") {
     if (left === right) {
-      return;
+      return EQUALITY;
+    } else if (left < right) {
+      return CORRECT_ORDER;
+    } else {
+      return WRONG_ORDER;
     }
-
-    return scalarCompare(left, right);
   }
 
   if (
@@ -17,7 +21,7 @@ export const compare = (left, right) => {
     Array.isArray(right) &&
     right.length === 0
   ) {
-    return true;
+    return EQUALITY;
   }
 
   if (
@@ -26,7 +30,7 @@ export const compare = (left, right) => {
     Array.isArray(right) &&
     right.length > 0
   ) {
-    return true;
+    return CORRECT_ORDER;
   }
 
   if (
@@ -35,18 +39,17 @@ export const compare = (left, right) => {
     Array.isArray(right) &&
     right.length === 0
   ) {
-    return false;
+    return WRONG_ORDER;
   }
 
   if (Array.isArray(left) && Array.isArray(right)) {
     const [leftHead, ...leftTail] = left;
     const [rightHead, ...rightTail] = right;
     const head = compare(leftHead, rightHead);
-    const tail = compare(leftTail, rightTail);
-    if (head !== undefined) {
+    if (head !== EQUALITY) {
       return head;
     } else {
-      return tail;
+      return compare(leftTail, rightTail);
     }
   }
 
@@ -57,6 +60,11 @@ export const compare = (left, right) => {
   if (Array.isArray(left) && typeof right === "number") {
     return compare(left, [right]);
   }
+};
+
+export const isOrderCorrect = (a, b): boolean => {
+  const correctOrder = compare(a, b) === CORRECT_ORDER;
+  return correctOrder;
 };
 
 export const parse = (fileName: string) => {
@@ -82,7 +90,7 @@ export const part1 = (fileName: string): number => {
   const packages = parse(fileName);
   const pairs = chunkInPairs(packages);
 
-  const comparisons = pairs.map(([left, right]) => compare(left, right));
+  const comparisons = pairs.map(([left, right]) => isOrderCorrect(left, right));
 
   const sum = comparisons.reduce(
     (sum, include, index) => (include ? sum + index + 1 : sum),
@@ -90,4 +98,8 @@ export const part1 = (fileName: string): number => {
   );
 
   return sum;
+};
+
+export const sortPackages = (packages) => {
+  return packages.sort(compare);
 };
