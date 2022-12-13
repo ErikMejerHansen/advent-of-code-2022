@@ -19,7 +19,7 @@ describe("Dec 13", () => {
       });
 
       it("can handle nested lists", () => {
-        // expect(compare([[4]], [[5]])).toBe(true);
+        expect(compare([[4]], [[5]])).toBe(true);
       });
     });
   });
