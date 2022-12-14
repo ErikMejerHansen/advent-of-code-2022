@@ -1,4 +1,11 @@
-import { buildMap, parseLine, parseLineSegment, viewMap } from "../14";
+import {
+  addSand,
+  buildMap,
+  parseLine,
+  parseLineSegment,
+  part1,
+  viewMap,
+} from "../14";
 
 describe("Dec 14", () => {
   describe("parsing", () => {
@@ -57,7 +64,7 @@ describe("Dec 14", () => {
     });
 
     it("can build a slice map for the example data", () => {
-      const map = buildMap("src/14/__tests__/test-data.txt");
+      const [map, _] = buildMap("src/14/__tests__/test-data.txt");
       expect(viewMap(map)).toEqual(
         "......+...\n" +
           "..........\n" +
@@ -74,7 +81,34 @@ describe("Dec 14", () => {
   });
 
   describe("Part 1", () => {
-    //
+    it("can move a gain of sand", () => {
+      const [map, sandEntryPoint] = buildMap("src/14/__tests__/test-data.txt");
+
+      addSand(map, sandEntryPoint);
+
+      console.log(viewMap(map));
+
+      expect(viewMap(map)).toEqual(
+        "......+...\n" +
+          "..........\n" +
+          "..........\n" +
+          "..........\n" +
+          "....#...##\n" +
+          "....#...#.\n" +
+          "..###...#.\n" +
+          "........#.\n" +
+          "......o.#.\n" +
+          "#########."
+      );
+    });
+
+    it("can add 24 units of sand to the example", () => {
+      expect(part1("src/14/__tests__/test-data.txt")).toEqual(24);
+    });
+
+    it("can add 24 units of sand", () => {
+      expect(part1("src/14/data/data.txt")).toEqual(768);
+    });
   });
 
   describe("Part 2", () => {

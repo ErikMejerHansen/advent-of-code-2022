@@ -1,4 +1,4 @@
-import { numericalSort, readLines, SortDirection } from "../utils";
+import { add, numericalSort, readLines, SortDirection } from "../utils";
 
 type Vector = [number, number];
 
@@ -58,7 +58,7 @@ export const parseLine = (line: string): Vector[] => {
 type MapMarking = "." | "+" | "#" | "o";
 type Map = Array<Array<MapMarking>>;
 
-const buildEmptyMap = (width: number, height: number) => {
+const buildEmptyMap = (height: number, width: number) => {
   const map: Map = [];
   for (let y = 0; y < height; y++) {
     const row = new Array<MapMarking>();
@@ -74,16 +74,19 @@ const buildEmptyMap = (width: number, height: number) => {
 const markRockLocations = (map: Map, rocks: Vector[], xOffset: number) => {
   for (const rock of rocks) {
     const [x, y] = rock;
-    map[y][x - xOffset] = "#";
+    const adjustedX = x - xOffset;
+    map[y][adjustedX] = "#";
   }
 };
 
 const markSandSource = (map: Map, xOffset: number) => {
-  // Set source of sand
-  map[0][500 - xOffset] = "+";
+  const source = 500 - xOffset;
+  map[0][source] = "+";
+
+  return source;
 };
 
-export const buildMap = (fileName: string) => {
+export const buildMap = (fileName: string): [Map, Vector] => {
   const data = readLines(fileName);
   const rows = data.map(parseLine);
   const points = rows.flat();
@@ -101,14 +104,92 @@ export const buildMap = (fileName: string) => {
 
   // Build empty map
   const map = buildEmptyMap(maxY + 1, maxX - minX + 1);
+  // Mark sand source
+  const sandSourceX = markSandSource(map, minX);
   // Place rocks
   markRockLocations(map, points, minX);
-  // Marks sand source
-  markSandSource(map, minX);
 
-  return map;
+  return [map, [sandSourceX, 0]];
 };
 
-export const viewMap = (map): string => {
+export const viewMap = (map: Map): string => {
   return map.map((row) => row.join("")).join("\n");
+};
+
+export const simulateSandGrain = (
+  at: Vector,
+  map: Map
+):
+  | { result: "At rest"; position: Vector }
+  | { result: "escaped"; position: Vector } => {
+  const down = add([0, 1], at);
+  const downAndLeft = add([-1, 1], at);
+  const downAndRight = add([1, 1], at);
+
+  if (down[1] > map.length - 1) {
+    return { result: "escaped", position: down };
+  }
+
+  if (downAndLeft[1] > map.length - 1) {
+    return { result: "escaped", position: downAndLeft };
+  }
+
+  if (downAndRight[1] > map.length - 1) {
+    return { result: "escaped", position: downAndLeft };
+  }
+
+  if (downAndLeft[0] < 0 || downAndLeft[0] > map[0].length - 1) {
+    return { result: "escaped", position: downAndLeft };
+  }
+
+  if (downAndRight[0] < 0 || downAndRight[0] > map[0].length - 1) {
+    return { result: "escaped", position: downAndRight };
+  }
+
+  const isDownBlocked = map[down[1]][down[0]] !== ".";
+  const isDownAndLeftBlocked = map[downAndLeft[1]][downAndLeft[0]] !== ".";
+  const isDownAndRightBlocked = map[downAndRight[1]][downAndRight[0]] !== ".";
+
+  if (!isDownBlocked) {
+    return simulateSandGrain(down, map);
+  }
+
+  if (!isDownAndLeftBlocked) {
+    return simulateSandGrain(downAndLeft, map);
+  }
+
+  if (!isDownAndRightBlocked) {
+    return simulateSandGrain(downAndRight, map);
+  }
+
+  return { result: "At rest", position: at };
+};
+
+export const addSand = (map: Map, at: Vector) => {
+  const { position, result } = simulateSandGrain(at, map);
+  const [dX, dY] = position;
+
+  if (result === "At rest") {
+    map[dY][dX] = "o";
+  }
+
+  return { position, result };
+};
+
+export const part1 = (fileName: string): number => {
+  const [map, sandEntryPoint] = buildMap(fileName);
+
+  let couldAddSand = true;
+  let amountOfSand = 0;
+  while (couldAddSand) {
+    const { result } = addSand(map, sandEntryPoint);
+    if (result === "At rest") {
+      couldAddSand = true;
+      amountOfSand++;
+    } else {
+      couldAddSand = false;
+    }
+  }
+
+  return amountOfSand;
 };
