@@ -86,8 +86,6 @@ describe("Dec 14", () => {
 
       addSand(map, sandEntryPoint);
 
-      console.log(viewMap(map));
-
       expect(viewMap(map)).toEqual(
         "......+...\n" +
           "..........\n" +
@@ -112,6 +110,8 @@ describe("Dec 14", () => {
   });
 
   describe("Part 2", () => {
-    //
+    it("can add 24 units of sand", () => {
+      expect(part1("src/14/data/data-with-floor.txt")).toEqual(26686);
+    });
   });
 });

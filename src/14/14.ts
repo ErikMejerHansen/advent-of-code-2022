@@ -182,8 +182,11 @@ export const part1 = (fileName: string): number => {
   let couldAddSand = true;
   let amountOfSand = 0;
   while (couldAddSand) {
-    const { result } = addSand(map, sandEntryPoint);
-    if (result === "At rest") {
+    const { result, position } = addSand(map, sandEntryPoint);
+    if (result === "At rest" && position[0] === 500 && position[1] === 0) {
+      couldAddSand = false;
+      amountOfSand++;
+    } else if (result === "At rest") {
       couldAddSand = true;
       amountOfSand++;
     } else {
