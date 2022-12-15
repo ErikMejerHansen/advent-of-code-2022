@@ -1,6 +1,7 @@
 import {
   add,
   findMaximum,
+  manhattanDistance,
   Matrix,
   numericalSort,
   parseDataToNumberArray,
@@ -121,5 +122,20 @@ describe("vectors", () => {
     expect(add([1, 0], [0, 0])).toEqual([1, 0]);
     expect(add([0, 1], [0, 0])).toEqual([0, 1]);
     expect(add([1, 1], [0, 0])).toEqual([1, 1]);
+  });
+});
+
+describe("distance measures", () => {
+  it("can calculate the manhattan distance between two points on a plane", () => {
+    expect(manhattanDistance([0, 0], [0, 0])).toEqual(0);
+
+    expect(manhattanDistance([1, 0], [0, 0])).toEqual(1);
+    expect(manhattanDistance([0, 0], [1, 0])).toEqual(1);
+
+    expect(manhattanDistance([0, 1], [0, 0])).toEqual(1);
+    expect(manhattanDistance([0, 0], [0, 1])).toEqual(1);
+
+    expect(manhattanDistance([10, 10], [-3, 4])).toEqual(19);
+    expect(manhattanDistance([-3, 4], [10, 10])).toEqual(19);
   });
 });

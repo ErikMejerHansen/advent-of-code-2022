@@ -69,3 +69,9 @@ export const add = (
   a: [number, number],
   b: [number, number]
 ): [number, number] => [b[0] + a[0], b[1] + a[1]];
+
+export type Vector2D = [number, number];
+export const manhattanDistance = (
+  [x1, y1]: Vector2D,
+  [x2, y2]: Vector2D
+): number => Math.abs(x1 - x2) + Math.abs(y1 - y2);
