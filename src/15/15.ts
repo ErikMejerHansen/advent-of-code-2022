@@ -108,12 +108,25 @@ export const part1 = (fileName: string, row: number): number => {
   const sensors = parse(fileName);
   const [[minX], [maxX]] = getSpanningCoordinates(sensors);
 
+  const maxRange = maximumRange(sensors);
+  const sensorsFilteredForYRange = sensors.filter((sensor) => {
+    const [_, y] = sensor.position;
+    return y - maxRange <= row && row <= y + maxRange;
+  });
+
   const rowSensorCoverage = new Array<boolean>();
 
   for (let x = minX; x < maxX; x++) {
+    const sensorsFilteredForXRange = sensorsFilteredForYRange.filter(
+      (sensor) => {
+        const [xSensor, _] = sensor.position;
+        return xSensor - maxRange <= x && x <= xSensor + maxRange;
+      }
+    );
     const position: Vector2D = [x, row];
     const cannotHaveBeacon =
-      inRange(position, sensors) && !hasBeacon(position, sensors);
+      inRange(position, sensorsFilteredForXRange) &&
+      !hasBeacon(position, sensorsFilteredForXRange);
     rowSensorCoverage.push(cannotHaveBeacon);
   }
 

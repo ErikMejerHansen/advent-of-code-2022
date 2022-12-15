@@ -55,7 +55,7 @@ describe("Dec 15", () => {
     });
   });
 
-  describe("Part 1", () => {
+  describe.only("Part 1", () => {
     it("can tell if a coordinate is within range of a sensor", () => {
       const sensor1: Sensor = { position: [2, 18], range: 10, beacon: [0, 0] };
       const sensor2: Sensor = { position: [2, 10], range: 7, beacon: [0, 0] };
@@ -77,9 +77,9 @@ describe("Dec 15", () => {
       expect(part1("src/15/__tests__/test-data.txt", 10)).toEqual(26);
     });
 
-    // it("finds 26 positions in row 26 where a beacon can't be", () => {
-    //   expect(part1("src/15/data/data.txt", 2_000_000)).toEqual(26);
-    // });
+    it("finds 26 positions in row 26 where a beacon can't be", () => {
+      expect(part1("src/15/data/data.txt", 2_000_000)).toEqual(26);
+    });
   });
 
   describe("Part 2", () => {
