@@ -35,11 +35,20 @@ export const parseLine = (line: string): Sensor => {
 export const parse = (fileName: string) =>
   readLines(fileName).map(parsePositionElement);
 
-export const buildLookUpMap = (sensors: Sensor[]) => {
-  const lookupMap = new Map<number, Sensor>();
+type LookupMap = Map<number, Map<number, Sensor>>;
+
+export const buildLookUpMap = (sensors: Sensor[]): LookupMap => {
+  const lookupMap = new Map<number, Map<number, Sensor>>();
 
   for (const sensor of sensors) {
-    lookupMap.set(sensor.position[0], sensor);
+    if (lookupMap.has(sensor.position[0])) {
+      const yCoordMap = lookupMap.get(sensor.position[0]);
+      yCoordMap.set(sensor.position[1], sensor);
+    } else {
+      const yCoordMap = new Map<number, Sensor>();
+      yCoordMap.set(sensor.position[1], sensor);
+      lookupMap.set(sensor.position[0], yCoordMap);
+    }
   }
 
   return lookupMap;

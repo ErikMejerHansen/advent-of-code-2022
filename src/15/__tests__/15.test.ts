@@ -19,7 +19,7 @@ describe("Dec 15", () => {
   });
 
   describe("sensor lookup structure", () => {
-    it("can build a map from x-coordinate to sensors at that x-coord", () => {
+    it("can build a map from x-coordinate to a map of y-coordinate => sensor", () => {
       const sensor1: Sensor = { position: [2, 18], range: 7 };
       const sensor2: Sensor = { position: [-2, 18], range: 7 };
 
@@ -27,6 +27,19 @@ describe("Dec 15", () => {
 
       expect(sensorLookUp.get(sensor1.position[0])).not.toBeUndefined();
       expect(sensorLookUp.get(sensor2.position[0])).not.toBeUndefined();
+
+      expect(
+        sensorLookUp.get(sensor1.position[0]).get(sensor1.position[1])
+      ).toBe(sensor1);
+    });
+
+    it("can handle multiple sensors with the same x-coordinate", () => {
+      const sensor1: Sensor = { position: [2, 18], range: 7 };
+      const sensor2: Sensor = { position: [2, 10], range: 7 };
+
+      const sensorLookUp = buildLookUpMap([sensor1, sensor2]);
+
+      expect(sensorLookUp.get(sensor1.position[0]).size).toEqual(2);
     });
   });
   describe("Part 1", () => {
