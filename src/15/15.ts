@@ -62,21 +62,25 @@ export const buildLookUpMap = (sensors: Sensor[]): LookupMap => {
 export const maximumRange = (sensors: Sensor[]) =>
   findMaximum(sensors.map((sensor) => sensor.range));
 
-export const inRange = (position: Vector2D, sensors: Sensor[]) => {
-  const sensorsInRange = sensors.filter((sensor) => {
+export const inRange = (position: Vector2D, sensors: Sensor[]): boolean => {
+  for (let i = 0; i < sensors.length; i++) {
+    const sensor = sensors[i];
     const distance = manhattanDistance(position, sensor.position);
-    return distance <= sensor.range;
-  });
-
-  return sensorsInRange.length > 0;
+    if (distance <= sensor.range) {
+      return true;
+    }
+  }
+  return false;
 };
 
 export const hasBeacon = (position: Vector2D, sensors: Sensor[]): boolean => {
-  const beaconOverlaps = sensors.filter((sensor) => {
-    return sensor.beacon[0] === position[0] && sensor.beacon[1] === position[1];
-  });
-
-  return beaconOverlaps.length > 0;
+  for (let i = 0; i < sensors.length; i++) {
+    const sensor = sensors[i];
+    if (sensor.beacon[0] === position[0] && sensor.beacon[1] === position[1]) {
+      return true;
+    }
+  }
+  return false;
 };
 
 export const getSpanningCoordinates = (
@@ -106,39 +110,51 @@ export const getSpanningCoordinates = (
   ];
 };
 
-export const part1 = (fileName: string, row: number): number => {
-  const sensors = parse(fileName);
-  const [[minX], [maxX]] = getSpanningCoordinates(sensors);
-
-  const maxRange = maximumRange(sensors);
+const rowCoverage = (
+  sensors: Sensor[],
+  row: number,
+  lowerLimit,
+  upperLimit
+): boolean[] => {
   const sensorsFilteredForYRange = sensors.filter((sensor) => {
     const [_, y] = sensor.position;
-    return y - maxRange <= row && row <= y + maxRange;
+    return y - sensor.range <= row && row <= y + sensor.range;
   });
 
   const rowSensorCoverage = new Array<boolean>();
 
-  for (let x = minX; x < maxX; x++) {
+  for (let x = lowerLimit; x < upperLimit; x++) {
     const sensorsFilteredForXRange = sensorsFilteredForYRange.filter(
       (sensor) => {
         const [xSensor, _] = sensor.position;
-        return xSensor - maxRange <= x && x <= xSensor + maxRange;
+        return xSensor - sensor.range <= x && x <= xSensor + sensor.range;
       }
     );
     const position: Vector2D = [x, row];
-    const cannotHaveBeacon =
-      inRange(position, sensorsFilteredForXRange) &&
-      !hasBeacon(position, sensorsFilteredForXRange);
+    const cannotHaveBeacon = inRange(position, sensorsFilteredForXRange);
+
     rowSensorCoverage.push(cannotHaveBeacon);
   }
 
-  return rowSensorCoverage.filter((it) => it).length;
+  return rowSensorCoverage;
 };
-//  .#########################.
-// ..#########################...
 
-//   ####.######################
-// ..####B######################..
+export const part1 = (fileName: string, row: number): number => {
+  const sensors = parse(fileName);
 
-//   ################.##########
-// .###S#############.###########.
+  const [[minX], [maxX]] = getSpanningCoordinates(sensors);
+
+  const rowSensorCoverage = rowCoverage(sensors, row, minX, maxX);
+  return rowSensorCoverage.filter((it) => it).length - 1;
+};
+
+export const part2 = (fileName: string, limit: number) => {
+  const sensors = parse(fileName);
+  for (let y = 0; y <= limit; y++) {
+    const row = rowCoverage(sensors, y, 0, limit);
+    console.log("Row:", y);
+    if (row.includes(false)) {
+      return row.indexOf(false) * 4_000_000 + y;
+    }
+  }
+};

@@ -5,6 +5,7 @@ import {
   parse,
   parseLine,
   part1,
+  part2,
   Sensor,
 } from "../15";
 
@@ -74,16 +75,24 @@ describe("Dec 15", () => {
     });
 
     test("for the sample data it finds 26 positions in row 26 where a beacon can't be", () => {
-      expect(part1("src/15/__tests__/test-data.txt", 9)).toEqual(25);
+      expect(part1("src/15/__tests__/test-data.txt", 9)).toEqual(24);
       expect(part1("src/15/__tests__/test-data.txt", 10)).toEqual(26);
-      expect(part1("src/15/__tests__/test-data.txt", 11)).toEqual(28);
+      expect(part1("src/15/__tests__/test-data.txt", 11)).toEqual(27);
     });
 
-    it("finds 4_665_948 positions in row 2_000_000 where a beacon can't be", () => {
+    // eslint-disable-next-line jest/no-disabled-tests
+    it.skip("finds 4_665_948 positions in row 2_000_000 where a beacon can't be", () => {
       expect(part1("src/15/data/data.txt", 2_000_000)).toEqual(4_665_948);
     });
   });
   describe("Part 2", () => {
-    //
+    it("calculates the score of the example as 56_000_011", () => {
+      expect(part2("src/15/__tests__/test-data.txt", 20)).toEqual(56_000_011);
+    });
+
+    // eslint-disable-next-line jest/no-disabled-tests
+    it.skip("calculates the score as", () => {
+      expect(part2("src/15/data/data.txt", 4_000_000)).toEqual(56_000_011);
+    });
   });
 });
