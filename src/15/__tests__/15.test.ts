@@ -2,9 +2,9 @@ import {
   buildLookUpMap,
   getSpanningCoordinates,
   inRange,
-  maximumRange,
   parse,
   parseLine,
+  part1,
   Sensor,
 } from "../15";
 
@@ -72,6 +72,14 @@ describe("Dec 15", () => {
       expect(upperLeft).toEqual([-2, 0]);
       expect(lowerRight).toEqual([25, 22]);
     });
+
+    test("for the sample data it finds 26 positions in row 26 where a beacon can't be", () => {
+      expect(part1("src/15/__tests__/test-data.txt", 10)).toEqual(26);
+    });
+
+    // it("finds 26 positions in row 26 where a beacon can't be", () => {
+    //   expect(part1("src/15/data/data.txt", 2_000_000)).toEqual(26);
+    // });
   });
 
   describe("Part 2", () => {

@@ -71,6 +71,14 @@ export const inRange = (position: Vector2D, sensors: Sensor[]) => {
   return sensorsInRange.length > 0;
 };
 
+export const hasBeacon = (position: Vector2D, sensors: Sensor[]): boolean => {
+  const beaconOverlaps = sensors.filter((sensor) => {
+    return sensor.beacon[0] === position[0] && sensor.beacon[1] === position[1];
+  });
+
+  return beaconOverlaps.length > 0;
+};
+
 export const getSpanningCoordinates = (
   sensors: Sensor[]
 ): [Vector2D, Vector2D] => {
@@ -94,4 +102,20 @@ export const getSpanningCoordinates = (
     [minX, minY],
     [maxX, maxY],
   ];
+};
+
+export const part1 = (fileName: string, row: number): number => {
+  const sensors = parse(fileName);
+  const [[minX], [maxX]] = getSpanningCoordinates(sensors);
+
+  const rowSensorCoverage = new Array<boolean>();
+
+  for (let x = minX; x < maxX; x++) {
+    const position: Vector2D = [x, row];
+    const cannotHaveBeacon =
+      inRange(position, sensors) && !hasBeacon(position, sensors);
+    rowSensorCoverage.push(cannotHaveBeacon);
+  }
+
+  return rowSensorCoverage.filter(Boolean).length;
 };
