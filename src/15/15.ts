@@ -83,23 +83,25 @@ export const getSpanningCoordinates = (
   sensors: Sensor[]
 ): [Vector2D, Vector2D] => {
   const minX = findMinimum(
-    sensors.map((sensor) => [sensor.position[0], sensor.beacon[0]]).flat()
+    sensors
+      .map((sensor) => [sensor.position[0] - sensor.range, sensor.beacon[0]])
+      .flat()
   );
 
   const maxX = findMaximum(
-    sensors.map((sensor) => [sensor.position[0], sensor.beacon[0]]).flat()
-  );
-
-  const minY = findMinimum(
-    sensors.map((sensor) => [sensor.position[1], sensor.beacon[1]]).flat()
+    sensors
+      .map((sensor) => [sensor.position[0] + sensor.range, sensor.beacon[0]])
+      .flat()
   );
 
   const maxY = findMaximum(
-    sensors.map((sensor) => [sensor.position[1], sensor.beacon[1]]).flat()
+    sensors
+      .map((sensor) => [sensor.position[1] + sensor.range, sensor.beacon[1]])
+      .flat()
   );
 
   return [
-    [minX, minY],
+    [minX, 0],
     [maxX, maxY],
   ];
 };
@@ -130,5 +132,13 @@ export const part1 = (fileName: string, row: number): number => {
     rowSensorCoverage.push(cannotHaveBeacon);
   }
 
-  return rowSensorCoverage.filter(Boolean).length;
+  return rowSensorCoverage.filter((it) => it).length;
 };
+//  .#########################.
+// ..#########################...
+
+//   ####.######################
+// ..####B######################..
+
+//   ################.##########
+// .###S#############.###########.
