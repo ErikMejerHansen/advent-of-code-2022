@@ -1,7 +1,14 @@
-import { findMaximum, manhattanDistance, readLines, Vector2D } from "../utils";
+import {
+  findMaximum,
+  findMinimum,
+  manhattanDistance,
+  readLines,
+  Vector2D,
+} from "../utils";
 
 export interface Sensor {
   position: Vector2D;
+  beacon: Vector2D;
   range: number;
 }
 
@@ -14,7 +21,6 @@ const parsePositionElement = (element: string): number => {
 };
 
 export const parseLine = (line: string): Sensor => {
-  // "Sensor at x=2, y=18: closest beacon is at x=-2, y=15"
   const [, , posX, posY, , , , , beaconX, beaconY] = line.split(" ");
 
   const position: Vector2D = [
@@ -29,11 +35,10 @@ export const parseLine = (line: string): Sensor => {
 
   const range = manhattanDistance(position, beaconPosition);
 
-  return { position, range };
+  return { position, range, beacon: beaconPosition };
 };
 
-export const parse = (fileName: string) =>
-  readLines(fileName).map(parsePositionElement);
+export const parse = (fileName: string) => readLines(fileName).map(parseLine);
 
 type LookupMap = Map<number, Map<number, Sensor>>;
 
@@ -56,3 +61,37 @@ export const buildLookUpMap = (sensors: Sensor[]): LookupMap => {
 
 export const maximumRange = (sensors: Sensor[]) =>
   findMaximum(sensors.map((sensor) => sensor.range));
+
+export const inRange = (position: Vector2D, sensors: Sensor[]) => {
+  const sensorsInRange = sensors.filter((sensor) => {
+    const distance = manhattanDistance(position, sensor.position);
+    return distance <= sensor.range;
+  });
+
+  return sensorsInRange.length > 0;
+};
+
+export const getSpanningCoordinates = (
+  sensors: Sensor[]
+): [Vector2D, Vector2D] => {
+  const minX = findMinimum(
+    sensors.map((sensor) => [sensor.position[0], sensor.beacon[0]]).flat()
+  );
+
+  const maxX = findMaximum(
+    sensors.map((sensor) => [sensor.position[0], sensor.beacon[0]]).flat()
+  );
+
+  const minY = findMinimum(
+    sensors.map((sensor) => [sensor.position[1], sensor.beacon[1]]).flat()
+  );
+
+  const maxY = findMaximum(
+    sensors.map((sensor) => [sensor.position[1], sensor.beacon[1]]).flat()
+  );
+
+  return [
+    [minX, minY],
+    [maxX, maxY],
+  ];
+};

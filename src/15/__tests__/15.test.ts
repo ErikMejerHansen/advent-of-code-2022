@@ -1,4 +1,12 @@
-import { buildLookUpMap, maximumRange, parse, parseLine, Sensor } from "../15";
+import {
+  buildLookUpMap,
+  getSpanningCoordinates,
+  inRange,
+  maximumRange,
+  parse,
+  parseLine,
+  Sensor,
+} from "../15";
 
 describe("Dec 15", () => {
   describe("parsing", () => {
@@ -6,7 +14,7 @@ describe("Dec 15", () => {
       const sensor = parseLine(
         "Sensor at x=2, y=18: closest beacon is at x=-2, y=15"
       );
-      const expectedSensor = { position: [2, 18], range: 7 };
+      const expectedSensor = { position: [2, 18], range: 7, beacon: [-2, 15] };
 
       expect(sensor).toEqual(expectedSensor);
     });
@@ -20,8 +28,12 @@ describe("Dec 15", () => {
 
   describe("sensor lookup structure", () => {
     it("can build a map from x-coordinate to a map of y-coordinate => sensor", () => {
-      const sensor1: Sensor = { position: [2, 18], range: 7 };
-      const sensor2: Sensor = { position: [-2, 18], range: 7 };
+      const sensor1: Sensor = { position: [2, 18], range: 7, beacon: [8, 19] };
+      const sensor2: Sensor = {
+        position: [-2, 18],
+        range: 7,
+        beacon: [-8, 18],
+      };
 
       const sensorLookUp = buildLookUpMap([sensor1, sensor2]);
 
@@ -34,8 +46,8 @@ describe("Dec 15", () => {
     });
 
     it("can handle multiple sensors with the same x-coordinate", () => {
-      const sensor1: Sensor = { position: [2, 18], range: 7 };
-      const sensor2: Sensor = { position: [2, 10], range: 7 };
+      const sensor1: Sensor = { position: [2, 18], range: 7, beacon: [8, 19] };
+      const sensor2: Sensor = { position: [2, 10], range: 7, beacon: [2, 17] };
 
       const sensorLookUp = buildLookUpMap([sensor1, sensor2]);
 
@@ -44,15 +56,21 @@ describe("Dec 15", () => {
   });
 
   describe("Part 1", () => {
-    it.todo("can tell if a coordinate is within range of a sensor");
+    it("can tell if a coordinate is within range of a sensor", () => {
+      const sensor1: Sensor = { position: [2, 18], range: 10, beacon: [0, 0] };
+      const sensor2: Sensor = { position: [2, 10], range: 7, beacon: [0, 0] };
 
-    it("can calculate the maximum search range", () => {
-      const sensor1: Sensor = { position: [2, 18], range: 10 };
-      const sensor2: Sensor = { position: [2, 10], range: 7 };
+      expect(inRange([2, 20], [sensor1, sensor2])).toBe(true);
+      expect(inRange([2, 40], [sensor1, sensor2])).toBe(false);
+    });
 
-      const searchRange = maximumRange([sensor1, sensor2]);
+    it("can find the spanning coordinates for the example data", () => {
+      const sensors = parse("src/15/__tests__/test-data.txt");
 
-      expect(searchRange).toEqual(10);
+      const [upperLeft, lowerRight] = getSpanningCoordinates(sensors);
+
+      expect(upperLeft).toEqual([-2, 0]);
+      expect(lowerRight).toEqual([25, 22]);
     });
   });
 
