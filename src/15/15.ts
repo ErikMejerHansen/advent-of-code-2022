@@ -1,4 +1,4 @@
-import { manhattanDistance, readLines, Vector2D } from "../utils";
+import { findMaximum, manhattanDistance, readLines, Vector2D } from "../utils";
 
 export interface Sensor {
   position: Vector2D;
@@ -53,3 +53,6 @@ export const buildLookUpMap = (sensors: Sensor[]): LookupMap => {
 
   return lookupMap;
 };
+
+export const maximumRange = (sensors: Sensor[]) =>
+  findMaximum(sensors.map((sensor) => sensor.range));

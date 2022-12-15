@@ -19,8 +19,7 @@ export const sum = (numbers: number[]): number =>
 
 export const toSet = (input: string): Set<string> => new Set(input.split(""));
 
-export const findMaximum = (numbers: number[]) =>
-  numbers.sort((a, b) => a - b)[numbers.length - 1];
+export const findMaximum = (numbers: number[]) => Math.max(...numbers);
 
 export type Matrix<T> = T[][];
 export interface Coordinate {

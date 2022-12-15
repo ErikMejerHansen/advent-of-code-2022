@@ -1,4 +1,4 @@
-import { buildLookUpMap, parse, parseLine, Sensor } from "../15";
+import { buildLookUpMap, maximumRange, parse, parseLine, Sensor } from "../15";
 
 describe("Dec 15", () => {
   describe("parsing", () => {
@@ -42,8 +42,18 @@ describe("Dec 15", () => {
       expect(sensorLookUp.get(sensor1.position[0]).size).toEqual(2);
     });
   });
+
   describe("Part 1", () => {
-    //
+    it.todo("can tell if a coordinate is within range of a sensor");
+
+    it("can calculate the maximum search range", () => {
+      const sensor1: Sensor = { position: [2, 18], range: 10 };
+      const sensor2: Sensor = { position: [2, 10], range: 7 };
+
+      const searchRange = maximumRange([sensor1, sensor2]);
+
+      expect(searchRange).toEqual(10);
+    });
   });
 
   describe("Part 2", () => {
