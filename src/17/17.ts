@@ -1,4 +1,5 @@
-export enum Jet {
-  Left,
+export const enum Jet {
+  Left = "<",
+  Right = ">",
 }
-export const parseJet = (jet: string) => Jet.Left;
+export const parseJet = (jet: string) => (jet === "<" ? Jet.Left : Jet.Right);
