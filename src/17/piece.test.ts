@@ -43,7 +43,7 @@ describe("Piece", () => {
     expect(piece.height).toEqual(height);
   });
 
-  it.todo("knows if it can move down");
-  it.todo("knows if it can move left");
-  it.todo("knows if it can move right");
+  it.todo("can tell which cells to check before moving down");
+  it.todo("can tell which cells to check before moving left");
+  it.todo("can tell which cells to check before moving right");
 });

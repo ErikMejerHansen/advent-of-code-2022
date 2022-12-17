@@ -80,5 +80,9 @@ describe("Level", () => {
         "@@@@@@@"
     );
   });
+  it.todo("will move a piece down when it applies gravity");
+  it.todo("will move a piece left when when the jet blows to the left");
+  it.todo("will move a piece left when when the jet blows to the right");
+  it.todo("will only move a piece if there are no obstacles");
   it.todo("knows the height of the highest piece");
 });
