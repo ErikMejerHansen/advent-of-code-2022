@@ -4,11 +4,13 @@ export class Piece {
   private _shape: Vector2D[];
   private _position: Vector2D;
   private _height: number;
+  private _downChecks: Vector2D[];
 
-  constructor(shape: Vector2D[], height: number) {
+  constructor(shape: Vector2D[], height: number, downChecks: Vector2D[]) {
     this._shape = shape;
     this._height = height;
     this._position = [2, 0];
+    this._downChecks = downChecks;
   }
 
   public get position() {
@@ -23,24 +25,49 @@ export class Piece {
     return this._height;
   }
 
+  public get downChecks() {
+    return this._downChecks;
+  }
+
   public static get Cube() {
-    return new Piece(cube, 2);
+    const downChecks: Vector2D[] = [
+      [0, 2],
+      [1, 2],
+    ];
+    return new Piece(cube, 2, downChecks);
   }
 
   public static get Plus() {
-    return new Piece(plus, 3);
+    const downChecks: Vector2D[] = [
+      [0, 2],
+      [2, 2],
+      [1, 3],
+    ];
+    return new Piece(plus, 3, downChecks);
   }
 
   public static get L() {
-    return new Piece(l, 3);
+    const downChecks: Vector2D[] = [
+      [0, 3],
+      [1, 3],
+      [2, 3],
+    ];
+    return new Piece(l, 3, downChecks);
   }
 
   public static get I() {
-    return new Piece(i, 4);
+    const downChecks: Vector2D[] = [[0, 4]];
+    return new Piece(i, 4, downChecks);
   }
 
   public static get Line() {
-    return new Piece(line, 1);
+    const downChecks: Vector2D[] = [
+      [0, 1],
+      [1, 1],
+      [2, 1],
+      [3, 1],
+    ];
+    return new Piece(line, 1, downChecks);
   }
 }
 
@@ -53,8 +80,8 @@ const line: Vector2D[] = [
 
 const cube: Vector2D[] = [
   [0, 0],
-  [0, 1],
   [1, 0],
+  [0, 1],
   [1, 1],
 ];
 

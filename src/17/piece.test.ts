@@ -9,21 +9,13 @@ describe("Piece", () => {
       [1, 0],
       [1, 1],
     ];
-    const cubePiece = new Piece(cube, 3);
+    const cubePiece = new Piece(cube, 3, []);
 
     expect(cubePiece.shape).toEqual(cube);
   });
 
   it("has a factory function for each shape", () => {
-    const cube: Vector2D[] = [
-      [0, 0],
-      [0, 1],
-      [1, 0],
-      [1, 1],
-    ];
-    const cubePiece = Piece.Cube;
-
-    expect(cubePiece.shape).toEqual(cube);
+    expect(Piece.Cube).not.toBeUndefined();
     expect(Piece.I).not.toBeUndefined();
     expect(Piece.L).not.toBeUndefined();
     expect(Piece.Plus).not.toBeUndefined();
@@ -43,7 +35,16 @@ describe("Piece", () => {
     expect(piece.height).toEqual(height);
   });
 
-  it.todo("can tell which cells to check before moving down");
+  it("can tell which cells to check before moving down", () => {
+    const piece = Piece.Line;
+
+    expect(piece.downChecks).toEqual([
+      [0, 1],
+      [1, 1],
+      [2, 1],
+      [3, 1],
+    ]);
+  });
   it.todo("can tell which cells to check before moving left");
   it.todo("can tell which cells to check before moving right");
 });
