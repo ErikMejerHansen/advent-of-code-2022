@@ -32,8 +32,15 @@ const i: Vector2D[] = [
 
 export class Piece {
   private _shape: Vector2D[];
+  private _position: Vector2D;
+
   constructor(shape: Vector2D[]) {
     this._shape = shape;
+    this._position = [2, 0];
+  }
+
+  public get position() {
+    return this._position;
   }
 
   public get shape() {

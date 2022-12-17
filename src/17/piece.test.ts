@@ -29,6 +29,10 @@ describe("Piece", () => {
     expect(Piece.Plus).not.toBeUndefined();
   });
 
+  it("knows its position", () => {
+    expect(Piece.L.position).toEqual([2, 0]);
+  });
+  it.todo("knows if it can move down");
   it.todo("knows if it can move left");
   it.todo("knows if it can move right");
 });
