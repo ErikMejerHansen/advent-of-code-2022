@@ -1,42 +1,5 @@
 import { Vector2D } from "../utils";
 
-const line: Vector2D[] = [
-  [0, 0],
-  [0, 1],
-  [0, 2],
-  [0, 3],
-];
-
-const cube: Vector2D[] = [
-  [0, 0],
-  [0, 1],
-  [1, 0],
-  [1, 1],
-];
-
-const plus: Vector2D[] = [
-  [0, 1],
-  [0, 1],
-  [1, 1],
-  [2, 1],
-  [1, 2],
-];
-
-const l: Vector2D[] = [
-  [2, 0],
-  [2, 1],
-  [0, 3],
-  [1, 3],
-  [2, 3],
-];
-
-const i: Vector2D[] = [
-  [0, 1],
-  [0, 2],
-  [0, 3],
-  [0, 4],
-];
-
 export class Piece {
   private _shape: Vector2D[];
   private _position: Vector2D;
@@ -80,3 +43,40 @@ export class Piece {
     return new Piece(line, 1);
   }
 }
+
+const line: Vector2D[] = [
+  [0, 0],
+  [0, 1],
+  [0, 2],
+  [0, 3],
+];
+
+const cube: Vector2D[] = [
+  [0, 0],
+  [0, 1],
+  [1, 0],
+  [1, 1],
+];
+
+const plus: Vector2D[] = [
+  [0, 1],
+  [0, 1],
+  [1, 1],
+  [2, 1],
+  [1, 2],
+];
+
+const l: Vector2D[] = [
+  [2, 0],
+  [2, 1],
+  [0, 3],
+  [1, 3],
+  [2, 3],
+];
+
+const i: Vector2D[] = [
+  [0, 1],
+  [0, 2],
+  [0, 3],
+  [0, 4],
+];
