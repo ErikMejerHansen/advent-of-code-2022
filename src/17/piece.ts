@@ -46,9 +46,9 @@ export class Piece {
 
 const line: Vector2D[] = [
   [0, 0],
-  [0, 1],
-  [0, 2],
-  [0, 3],
+  [1, 0],
+  [2, 0],
+  [3, 0],
 ];
 
 const cube: Vector2D[] = [
@@ -59,7 +59,7 @@ const cube: Vector2D[] = [
 ];
 
 const plus: Vector2D[] = [
-  [0, 1],
+  [1, 0],
   [0, 1],
   [1, 1],
   [2, 1],
@@ -69,14 +69,14 @@ const plus: Vector2D[] = [
 const l: Vector2D[] = [
   [2, 0],
   [2, 1],
-  [0, 3],
-  [1, 3],
-  [2, 3],
+  [0, 2],
+  [1, 2],
+  [2, 2],
 ];
 
 const i: Vector2D[] = [
+  [0, 0],
   [0, 1],
   [0, 2],
   [0, 3],
-  [0, 4],
 ];
