@@ -1,4 +1,4 @@
-import { Jet, parseJet } from "../17";
+import { Jet, parseJet, parseJets } from "../17";
 
 describe("Dec 17", () => {
   describe("parsing", () => {
