@@ -119,5 +119,11 @@ describe("Level", () => {
     );
   });
 
-  it.todo("knows the height of the highest piece");
+  it("knows the height of the highest piece", () => {
+    const level = new Level([]);
+    level.add(Piece.Plus);
+    level.add(Piece.I);
+
+    expect(level.height).toEqual(6);
+  });
 });

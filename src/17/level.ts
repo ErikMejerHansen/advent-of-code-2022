@@ -33,6 +33,16 @@ export class Level {
     this._levels = this._levels.filter((row) => !row.every((cell) => !cell));
   }
 
+  public print(): string {
+    return this._levels
+      .map((level) => level.map((occupied) => (occupied ? "@" : ".")).join(""))
+      .join("\n");
+  }
+
+  public get height() {
+    return this._levels.length - 1;
+  }
+
   private findPiecePlacement(piece: Piece): utils.Vector2D {
     let pieceEndPosition = this._offsetLeft;
     let didMove = false;
@@ -92,11 +102,5 @@ export class Level {
       const [x, y] = utils.add(position, willOccupy);
       return !this._levels[y][x];
     });
-  }
-
-  public print(): string {
-    return this._levels
-      .map((level) => level.map((occupied) => (occupied ? "@" : ".")).join(""))
-      .join("\n");
   }
 }
