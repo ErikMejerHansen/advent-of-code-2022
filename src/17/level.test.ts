@@ -59,7 +59,6 @@ describe("Level", () => {
     level.add(Piece.L);
 
     const levelPrint = level.print();
-    console.log(levelPrint);
 
     expect(levelPrint).toEqual(
       "....@..\n" + "....@..\n" + "..@@@..\n" + "@@@@@@@"
@@ -90,6 +89,17 @@ describe("Level", () => {
     );
   });
 
+  it("a piece will end up in the middle if the jet is alternates direction", () => {
+    const jets = [Jet.Right, Jet.Left];
+    const level = new Level(jets);
+    level.add(Piece.I);
+
+    const levelPrint = level.print();
+
+    expect(levelPrint).toEqual(
+      "..@....\n" + "..@....\n" + "..@....\n" + "..@....\n" + "@@@@@@@"
+    );
+  });
   it.todo("will only move a piece if there are no obstacles");
   it.todo("knows the height of the highest piece");
 });

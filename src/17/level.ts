@@ -15,27 +15,14 @@ export class Level {
     this._levels.unshift([false, false, false, false, false, false, false]);
     this._levels.unshift([false, false, false, false, false, false, false]);
     this._levels.unshift([false, false, false, false, false, false, false]);
+
+    // Make room for the new piece
     for (let y = 0; y < piece.height; y++) {
       this._levels.unshift([false, false, false, false, false, false, false]);
     }
 
-    let pieceEndPosition = this._offsetLeft;
-
-    if (this._jets[0] === Jet.Right) {
-      while (this.canMoveRight(piece.rightChecks, pieceEndPosition)) {
-        pieceEndPosition = utils.add(pieceEndPosition, [1, 0]);
-      }
-    }
-
-    if (this._jets[0] === Jet.Left) {
-      while (this.canMoveLeft(piece.leftChecks, pieceEndPosition)) {
-        pieceEndPosition = utils.add(pieceEndPosition, [-1, 0]);
-      }
-    }
-
-    while (this.canMoveDown(piece.downChecks, pieceEndPosition)) {
-      pieceEndPosition = utils.add(pieceEndPosition, [0, 1]);
-    }
+    // Find the end position for the new piece
+    const pieceEndPosition = this.findPiecePlacement(piece);
 
     for (const part of piece.shape) {
       const [x, y] = utils.add(pieceEndPosition, part);
@@ -44,6 +31,43 @@ export class Level {
 
     // Clear out empty rows at the top
     this._levels = this._levels.filter((row) => !row.every((cell) => !cell));
+  }
+
+  private findPiecePlacement(piece: Piece): utils.Vector2D {
+    let pieceEndPosition = this._offsetLeft;
+    let didMove = false;
+
+    do {
+      didMove = false;
+      if (
+        this._jets[0] === Jet.Right &&
+        this.canMoveRight(piece.rightChecks, pieceEndPosition)
+      ) {
+        pieceEndPosition = utils.add(pieceEndPosition, [1, 0]);
+        didMove = true;
+      }
+
+      if (
+        this._jets[0] === Jet.Left &&
+        this.canMoveLeft(piece.leftChecks, pieceEndPosition)
+      ) {
+        pieceEndPosition = utils.add(pieceEndPosition, [-1, 0]);
+        didMove = true;
+      }
+
+      if (this.canMoveDown(piece.downChecks, pieceEndPosition)) {
+        pieceEndPosition = utils.add(pieceEndPosition, [0, 1]);
+        didMove = true;
+      } else {
+        didMove = false;
+      }
+
+      // Move the jet to the next position
+      const [currentJet, ...rest] = this._jets;
+      this._jets = [...rest, currentJet];
+    } while (didMove);
+
+    return pieceEndPosition;
   }
 
   private canMoveRight(checks: utils.Vector2D[], position) {
