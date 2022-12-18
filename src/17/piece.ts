@@ -5,12 +5,19 @@ export class Piece {
   private _position: Vector2D;
   private _height: number;
   private _downChecks: Vector2D[];
+  private _leftChecks: Vector2D[];
 
-  constructor(shape: Vector2D[], height: number, downChecks: Vector2D[]) {
+  constructor(
+    shape: Vector2D[],
+    height: number,
+    downChecks: Vector2D[],
+    leftChecks: Vector2D[]
+  ) {
     this._shape = shape;
     this._height = height;
     this._position = [2, 0];
     this._downChecks = downChecks;
+    this._leftChecks = leftChecks;
   }
 
   public get position() {
@@ -29,12 +36,21 @@ export class Piece {
     return this._downChecks;
   }
 
+  public get leftChecks() {
+    return this._downChecks;
+  }
+
   public static get Cube() {
     const downChecks: Vector2D[] = [
       [0, 2],
       [1, 2],
     ];
-    return new Piece(cube, 2, downChecks);
+    const leftChecks: Vector2D[] = [
+      [-1, 0],
+      [-1, 1],
+    ];
+
+    return new Piece(cube, 2, downChecks, leftChecks);
   }
 
   public static get Plus() {
@@ -43,7 +59,13 @@ export class Piece {
       [2, 2],
       [1, 3],
     ];
-    return new Piece(plus, 3, downChecks);
+    const leftChecks: Vector2D[] = [
+      [0, 0],
+      [-1, 1],
+      [0, 2],
+    ];
+
+    return new Piece(plus, 3, downChecks, leftChecks);
   }
 
   public static get L() {
@@ -52,12 +74,25 @@ export class Piece {
       [1, 3],
       [2, 3],
     ];
-    return new Piece(l, 3, downChecks);
+    const leftChecks: Vector2D[] = [
+      [1, 0],
+      [1, 1],
+      [-1, 2],
+    ];
+
+    return new Piece(l, 3, downChecks, leftChecks);
   }
 
   public static get I() {
     const downChecks: Vector2D[] = [[0, 4]];
-    return new Piece(i, 4, downChecks);
+    const leftChecks: Vector2D[] = [
+      [-1, 0],
+      [-1, 1],
+      [-1, 2],
+      [-1, 3],
+    ];
+
+    return new Piece(i, 4, downChecks, leftChecks);
   }
 
   public static get Line() {
@@ -67,7 +102,9 @@ export class Piece {
       [2, 1],
       [3, 1],
     ];
-    return new Piece(line, 1, downChecks);
+
+    const leftChecks: Vector2D[] = [[-1, 0]];
+    return new Piece(line, 1, downChecks, leftChecks);
   }
 }
 

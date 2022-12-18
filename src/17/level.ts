@@ -1,11 +1,14 @@
 import { Piece } from "./piece";
 import * as utils from "../utils";
+import { Jet } from "./17";
 
 export class Level {
   private _levels: boolean[][] = [[true, true, true, true, true, true, true]];
   // "Each rock appears so that its left edge is two units away from the left wall
   // and its bottom edge is three units above the highest rock in the room"
   private _offsetLeft: utils.Vector2D = [2, 0];
+
+  constructor(private _jets: Jet[]) {}
 
   public add(piece: Piece) {
     // "three units above the highest rock in the room"
@@ -18,6 +21,12 @@ export class Level {
 
     let pieceEndPosition = this._offsetLeft;
 
+    if (this._jets[0] === Jet.Left) {
+      while (this.canMoveLeft(piece.leftChecks, pieceEndPosition)) {
+        pieceEndPosition = utils.add(pieceEndPosition, [-1, 0]);
+      }
+    }
+
     while (this.canMoveDown(piece.downChecks, pieceEndPosition)) {
       pieceEndPosition = utils.add(pieceEndPosition, [0, 1]);
     }
@@ -29,6 +38,13 @@ export class Level {
 
     // Clear out empty rows at the top
     this._levels = this._levels.filter((row) => !row.every((cell) => !cell));
+  }
+
+  private canMoveLeft(checks: utils.Vector2D[], position) {
+    return checks.every((willOccupy) => {
+      const [x, y] = utils.add(position, willOccupy);
+      return x > 0 && !this._levels[y][x];
+    });
   }
 
   private canMoveDown(
