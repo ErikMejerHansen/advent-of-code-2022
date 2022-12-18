@@ -9,7 +9,7 @@ describe("Piece", () => {
       [1, 0],
       [1, 1],
     ];
-    const cubePiece = new Piece(cube, 3, [], []);
+    const cubePiece = new Piece(cube, 3, [], [], []);
 
     expect(cubePiece.shape).toEqual(cube);
   });

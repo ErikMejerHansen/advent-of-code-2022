@@ -21,6 +21,12 @@ export class Level {
 
     let pieceEndPosition = this._offsetLeft;
 
+    if (this._jets[0] === Jet.Right) {
+      while (this.canMoveRight(piece.rightChecks, pieceEndPosition)) {
+        pieceEndPosition = utils.add(pieceEndPosition, [1, 0]);
+      }
+    }
+
     if (this._jets[0] === Jet.Left) {
       while (this.canMoveLeft(piece.leftChecks, pieceEndPosition)) {
         pieceEndPosition = utils.add(pieceEndPosition, [-1, 0]);
@@ -40,10 +46,17 @@ export class Level {
     this._levels = this._levels.filter((row) => !row.every((cell) => !cell));
   }
 
+  private canMoveRight(checks: utils.Vector2D[], position) {
+    return checks.every((willOccupy) => {
+      const [x, y] = utils.add(position, willOccupy);
+      return x <= this._levels.length - 1 && !this._levels[y][x];
+    });
+  }
+
   private canMoveLeft(checks: utils.Vector2D[], position) {
     return checks.every((willOccupy) => {
       const [x, y] = utils.add(position, willOccupy);
-      return x > 0 && !this._levels[y][x];
+      return x >= 0 && !this._levels[y][x];
     });
   }
 
