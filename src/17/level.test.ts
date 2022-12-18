@@ -100,6 +100,24 @@ describe("Level", () => {
       "..@....\n" + "..@....\n" + "..@....\n" + "..@....\n" + "@@@@@@@"
     );
   });
-  it.todo("will only move a piece if there are no obstacles");
+
+  it("will only move a piece if there are no obstacles", () => {
+    const level = new Level([]);
+    level.add(Piece.Plus);
+    level.add(Piece.I);
+
+    const levelPrint = level.print();
+
+    expect(levelPrint).toEqual(
+      "..@....\n" +
+        "..@....\n" +
+        "..@....\n" +
+        "..@@...\n" +
+        "..@@@..\n" +
+        "...@...\n" +
+        "@@@@@@@"
+    );
+  });
+
   it.todo("knows the height of the highest piece");
 });
