@@ -83,7 +83,7 @@ export class Level {
   private canMoveRight(checks: utils.Vector2D[], position) {
     return checks.every((willOccupy) => {
       const [x, y] = utils.add(position, willOccupy);
-      return x <= this._levels.length - 1 && !this._levels[y][x];
+      return x <= this._levels[0].length - 1 && !this._levels[y][x];
     });
   }
 

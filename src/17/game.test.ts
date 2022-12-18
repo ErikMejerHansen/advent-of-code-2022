@@ -2,12 +2,12 @@ import { Game } from "./game";
 
 describe("Game", () => {
   it("knows which game turn it is", () => {
-    const game = new Game();
+    const game = new Game([]);
     expect(game.turn).toEqual(0);
   });
 
   it("adds a piece to the level each turn", () => {
-    const game = new Game();
+    const game = new Game([]);
     game.run(1);
     expect(game.level.height).toEqual(1); // First piece is the - piece
 
@@ -25,7 +25,7 @@ describe("Game", () => {
   });
 
   it("can run for a certain amount of turns", () => {
-    const game = new Game();
+    const game = new Game([]);
     game.run(100);
     expect(game.turn).toEqual(100);
   });

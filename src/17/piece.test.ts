@@ -45,6 +45,4 @@ describe("Piece", () => {
       [3, 1],
     ]);
   });
-  it.todo("can tell which cells to check before moving left");
-  it.todo("can tell which cells to check before moving right");
 });

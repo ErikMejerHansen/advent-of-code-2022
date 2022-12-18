@@ -1,4 +1,4 @@
-import { Jet, parseJets } from "../17";
+import { Jet, parseJets, part1 } from "../17";
 
 describe("Dec 17", () => {
   describe("parsing", () => {
@@ -7,7 +7,9 @@ describe("Dec 17", () => {
     });
   });
   describe("Part 1", () => {
-    //
+    test("that the game ends with a hight of 3068 for the example input", () => {
+      expect(part1("src/17/__tests__/test-data.txt")).toEqual(3068);
+    });
   });
 
   describe("Part 2", () => {

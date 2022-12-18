@@ -1,3 +1,4 @@
+import { Jet } from "./17";
 import { Level } from "./level";
 import { Piece } from "./piece";
 
@@ -6,8 +7,8 @@ export class Game {
   private _level: Level;
   private _pieces = [Piece.Line, Piece.Plus, Piece.L, Piece.I, Piece.Cube];
 
-  constructor() {
-    this._level = new Level([]);
+  constructor(jets: Jet[]) {
+    this._level = new Level(jets);
   }
 
   public run(numberOfTurns: number) {
