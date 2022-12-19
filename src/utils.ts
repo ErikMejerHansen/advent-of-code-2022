@@ -60,17 +60,24 @@ export const numericalSort = (
 export const max = (a: number[]) =>
   numericalSort(a, SortDirection.Descending)[0];
 
-export const subtract = (
-  a: [number, number],
-  b: [number, number]
-): [number, number] => [b[0] - a[0], b[1] - a[1]];
-
-export const add = (
-  a: [number, number],
-  b: [number, number]
-): [number, number] => [b[0] + a[0], b[1] + a[1]];
-
 export type Vector2D = [number, number];
+export type Vector3D = [number, number, number];
+export const subtract = (a: Vector2D, b: Vector2D): Vector2D => [
+  b[0] - a[0],
+  b[1] - a[1],
+];
+
+export const add = (a: Vector2D, b: Vector2D): Vector2D => [
+  b[0] + a[0],
+  b[1] + a[1],
+];
+
+export const addVector3D = (a: Vector3D, b: Vector3D): Vector3D => [
+  b[0] + a[0],
+  b[1] + a[1],
+  b[2] + a[2],
+];
+
 export const manhattanDistance = (
   [x1, y1]: Vector2D,
   [x2, y2]: Vector2D

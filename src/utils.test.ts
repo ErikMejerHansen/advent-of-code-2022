@@ -1,5 +1,6 @@
 import {
   add,
+  addVector3D,
   findMaximum,
   manhattanDistance,
   Matrix,
@@ -110,18 +111,32 @@ describe("toSet", () => {
 });
 
 describe("vectors", () => {
-  it("can subtract vectors", () => {
-    expect(subtract([0, 0], [0, 0])).toEqual([0, 0]);
-    expect(subtract([1, 0], [0, 0])).toEqual([-1, 0]);
-    expect(subtract([0, 1], [0, 0])).toEqual([0, -1]);
-    expect(subtract([1, 1], [0, 0])).toEqual([-1, -1]);
+  describe("Vector2D", () => {
+    it("can subtract vectors", () => {
+      expect(subtract([0, 0], [0, 0])).toEqual([0, 0]);
+      expect(subtract([1, 0], [0, 0])).toEqual([-1, 0]);
+      expect(subtract([0, 1], [0, 0])).toEqual([0, -1]);
+      expect(subtract([1, 1], [0, 0])).toEqual([-1, -1]);
+    });
+
+    it("can add vectors", () => {
+      expect(add([0, 0], [0, 0])).toEqual([0, 0]);
+      expect(add([1, 0], [0, 0])).toEqual([1, 0]);
+      expect(add([0, 1], [0, 0])).toEqual([0, 1]);
+      expect(add([1, 1], [0, 0])).toEqual([1, 1]);
+    });
   });
 
-  it("can add vectors", () => {
-    expect(add([0, 0], [0, 0])).toEqual([0, 0]);
-    expect(add([1, 0], [0, 0])).toEqual([1, 0]);
-    expect(add([0, 1], [0, 0])).toEqual([0, 1]);
-    expect(add([1, 1], [0, 0])).toEqual([1, 1]);
+  describe("Vector3D", () => {
+    it("can add vectors", () => {
+      expect(addVector3D([0, 0, 0], [0, 0, 0])).toEqual([0, 0, 0]);
+
+      expect(addVector3D([1, 0, 0], [0, 0, 0])).toEqual([1, 0, 0]);
+      expect(addVector3D([0, 1, 0], [0, 0, 0])).toEqual([0, 1, 0]);
+      expect(addVector3D([0, 0, 1], [0, 0, 0])).toEqual([0, 0, 1]);
+
+      expect(addVector3D([1, 1, 1], [0, 0, 0])).toEqual([1, 1, 1]);
+    });
   });
 });
 
